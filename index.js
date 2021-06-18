@@ -309,11 +309,11 @@ function callApi() {
 }
 
 callApi();
+ */
 
-* 以下は、
-* windowは省略
-* async を追加
-* await を追加
+// 以下は、 windowは省略
+// async を追加
+// await を追加
 async await で fetch を使うとresponseオブジェクトが返ってくることだけ抑える
 
 async function callApi() {
@@ -323,7 +323,7 @@ async function callApi() {
 }
 
 callApi();
-*/
+
 
 /* 下記のように、thenで書き換えることができるが、やはりasync awaitが新しくてよく使われている
 async function callApi() {
