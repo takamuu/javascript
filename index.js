@@ -90,7 +90,7 @@
 
 /**
  * var の特徴
- * 再代入できる、　再定義できる。
+ * 再代入できる、再定義できる。
  */
 
 // var varNumber = 100;
@@ -284,4 +284,71 @@
 //     console.log("リポジトリを削除");
 //  }
 // });
+
+
+const foods = ["にんじん", "じゃがいも", "玉ねぎ"];
+
+foods.forEach(function(food) {
+  console.log(food);
+})
+
+*/
+
+/*--------------------------------
+** Web Api とは？？
+実際に叩いてみよう → https://jsonplaceholder.typicode.com/
+
+こういった API をつくるのがバックエンドの仕事。
+主にフロントエンドはバックエンドが作った API を使って UI を構築する。
+API をプログラム側(JavaScript) から叩いてデータのやり取りを行う
+
+実際にApiを叩いてみる
+function callApi() {
+  const res = window.fetch("https://jsonplaceholder.typicode.com/users");
+  console.log(res);
+}
+
+callApi();
+
+* 以下は、
+* windowは省略
+* async を追加
+* await を追加
+async await で fetch を使うとresponseオブジェクトが返ってくることだけ抑える
+
+async function callApi() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/users");
+  const users = await res.json();
+  console.log(users);
+}
+
+callApi();
+*/
+
+/* 下記のように、thenで書き換えることができるが、やはりasync awaitが新しくてよく使われている
+async function callApi() {
+  fetch("https://jsonplaceholder.typicode.com/users")
+    .then(function (res) {
+      return res.json();
+    })
+    .then(function (users) {
+      console.log(users);
+    });
+}
+
+callApi();
+*/
+
+/* fetch を使わない書き方 知っておくくらいでOK
+function callApi() {
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://jsonplaceholder.typicode.com/users");
+  xhr.responseType = "json";
+  xhr.send();
+  xhr.onload = function() {
+    console.log(xhr.response);
+  };
+}
+
+callApi();
 */
