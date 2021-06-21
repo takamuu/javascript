@@ -19,14 +19,14 @@ const addTodo = () => {
   todoList.appendChild(newTodo);
   const checkButton = document.createElement('button');
   checkButton.addEventListener('click', switchState);
-  checkButton.innerHTML = '□未着手';
+  checkButton.innerHTML = '<i class="far fa-square"></i>';
   checkButton.classList.add('check-button');
   newTodo.appendChild(checkButton);
 
   // 削除ボタン
   const deleteButton = document.createElement('button');
   deleteButton.addEventListener('click', deleteTodo);
-  deleteButton.innerHTML = '削除';
+  deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
   deleteButton.classList.add('delete-button');
   newTodo.appendChild(deleteButton);
 
@@ -37,15 +37,24 @@ const addTodo = () => {
 };
 
 const switchState = (e) => {
-  let checkButton = e.target;
+  let checkButton = e.target.closest('.check-button');
 
-  if (!checkButton.classList.contains('complete')) {
-    checkButton.innerHTML = '完了';
-    checkButton.classList.add('complete');
+  if (checkButton.dataset.state !== 'complete') {
+    checkButton.innerHTML = '<i class="far fa-check-square"></i>';
+    checkButton.dataset.state = 'complete';
   } else {
-    checkButton.innerHTML = '□未着手';
-    checkButton.classList.remove('complete');
+    checkButton.innerHTML = '<i class="far fa-square"></i>';
+    checkButton.dataset.state = '';
   }
+
+  // 以下は上記の書き換え（動作は同じ）
+  // if (!checkButton.classList.contains('complete')) {
+  //   checkButton.innerHTML = '<i class="far fa-check-square"></i>';
+  //   checkButton.classList.add('complete');
+  // } else {
+  //   checkButton.innerHTML = '<i class="far fa-square"></i>';
+  //   checkButton.classList.remove('complete');
+  // }
 };
 
 const deleteTodo = (e) => {
