@@ -155,3 +155,145 @@ object.func();
 // 実行結果: undefind
 object2.func();
 // 実行結果: undefind
+
+
+// オブジェクト指向
+// class Car {
+  // インスタンス変数
+  // color: string;
+  // constructorメソッドで初期値を設定
+  // constructor(color: string) {
+    // this.color = color;
+  //   constructor(public color: string) {
+  // }
+  // デフォルト値を設定することも可能です
+  // price: number = 1000000;
+  // capacity: number = 4;
+  // introduceCar(): void {
+  //   console.log(`これは、${this.capacity}人乗りの車で、色は${this.color}、値段は${this.price}円です。`);  
+  // }
+// }
+
+// const car1 = new Car("red");
+// console.log(car1.color);
+// // インスタンス変数を使用するには次のようにインスタンス.プロパティ名と書きます。
+// console.log(car1.price);
+
+// public クラスの外でもアクセス可---------------------
+// class Car {
+//   // クラス外からもアクセスが可能
+//   price: number = 1000000;
+//   // publicをつけなくても capacity は public変数になる
+//   capacity: number = 4;
+
+//   introduceCar(): void {
+//     console.log(`これは、${this.capacity}人乗りの車で、値段は${this.price}円です。`);
+//   }
+// }
+
+// const car = new Car();
+// // publicなプロパティ、メソッドにはインスタンス後もアクセスが可能
+// console.log(car.price);
+// console.log(car.capacity);
+
+//protected 定義されたクラスとそのクラスを継承したクラス内のみアクセス可------------------
+// class Car {
+//   protected price: number;
+//   protected capacity: number;
+
+//   constructor() {
+//     this.price = 1000000;
+//     this.capacity = 4;
+//   }
+
+//   protected introduceCar(): void {
+//     console.log(`これは、${this.capacity}人乗りの車で、値段は${this.price}円です。`);
+//   }
+// }
+
+// class Truck extends Car {
+//   constructor() {
+//     super();
+//     this.price = 4000000;
+//     this.introduceCar();
+//   }
+// }
+
+// const truck = new Truck();
+// // インスタンス化された後は protected のプロパティやメソッドにはアクセスできない。
+// console.log(truck.price);
+// truck.introduceCar();
+
+// private 定義されたクラス内でのみアクセス可-----------------
+// class Car {
+//   private price: number;
+//   private capacity: number;
+
+//   constructor() {
+//     this.price = 1000000;
+//     this.capacity = 4;
+//   }
+
+//   private introduceCar(): void {
+//     console.log(`これは、${this.capacity}人乗りの車で、値段は${this.price}円です。`);
+//   }
+// }
+
+// class Truck extends Car {
+//   constructor() {
+//     super();
+//     // コンパイルエラーが出る
+//     this.price = 4000000;
+//     // コンパイルエラーが出る
+//     this.introduceCar();
+//   }
+// }
+
+// const car = new Car();
+// // コンパイルエラーが出る
+// console.log(car.price);
+// car.introduceCar();
+
+// const truck = new Truck();
+// // コンパイルエラーが出る
+// console.log(truck.price);
+// truck.introduceCar();
+
+
+// ゲッター --------------------
+// class Car {
+//   private _color: string;
+//   private _price: number;
+
+//   constructor() {
+//     this._color = "red";
+//     this._price = 1000000;
+//   }
+
+//   get color() {
+//     return this._color;
+//   }
+// }
+
+// const car = new Car();
+// console.log(car.color);
+
+// セッター ---------------------
+class Car {
+  private _color: string;
+  private _price: number;
+
+  constructor() {
+    this._color = "red";
+    this._price = 1000000;
+  }
+
+  set price(price: number) {
+    this._price = price;
+  }
+}
+
+const car = new Car();
+car.price = 2000000;
+
+// console.log(car.color);

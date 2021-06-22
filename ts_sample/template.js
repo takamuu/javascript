@@ -1,12 +1,17 @@
-var _this = this;
-var template = "\n  \u304A\u306F\u3088\u3046\u3054\u3056\u3044\u307E\u3059\u3002\n  \u4ECA\u65E5\u306F\u3044\u3044\u5929\u6C17\u3067\u3059\u306D\uFF01\n  ";
+var template = `
+  おはようございます。
+  今日はいい天気ですね！
+  `;
 console.log(template);
 // 変数 weather を定義
 var weather = '晴れ';
-var template2 = "\n   \u304A\u306F\u3088\u3046\u3054\u3056\u3044\u307E\u3059\u3002\n   \u4ECA\u65E5\u306F" + weather + "\u3067\u3059\u306D\uFF01\n   ";
+var template2 = `
+   おはようございます。
+   今日は${weather}ですね！
+   `;
 console.log(template2);
 var message1 = 'Hello!';
-var message2 = 'Bye!';
+let message2 = 'Bye!';
 if (true) {
     console.log(message1);
     console.log(message2);
@@ -17,7 +22,7 @@ if (true) {
 console.log(message3);
 if (true) {
     // let はブロック内でしか使用できない変数
-    var message4 = 'やるで!';
+    let message4 = 'やるで!';
 }
 var message5 = 'おはよう!';
 function logMessage() {
@@ -60,18 +65,18 @@ var sum = function (x, y) {
 // 通常の関数のように使用できる。
 console.log(sum(1, 3));
 // アロー関数
-var sum = function (x, y) {
+var sum = (x, y) => {
     return x + y;
 };
 // {},returnの省略
-var sum = function (x, y) { return x + y; };
+var sum = (x, y) => x + y;
 // ()の省略 → 型が定義されていない場合
-var greet = function (name) { return console.log("\u3053\u3093\u306B\u3061\u306F\uFF01" + name + "\u3055\u3093"); };
+var greet = name => console.log(`こんにちは！${name}さん`);
 // errorが出るけど一応動く
 greet();
 greet('佐藤');
 // 引数がないので()を省略できない
-var sayHello2 = function () { return console.log('Hello'); };
+const sayHello2 = () => console.log('Hello');
 // アロー関数と通常関数の違いを以下で比較
 // 通常関数--------------------
 // this.elementをコンソールに出力する通常関数
@@ -100,8 +105,9 @@ object.func();
 object2.func();
 // アロー関数-----------------------------
 // this.elementをコンソールに出力するアロー関数
-var printElement = function () { return console.log(_this.element); };
+var printElement = () => console.log(this.element);
 printElement();
+// 実行結果: undefind
 var object = {
     element: 'object element',
     func: printElement
@@ -111,4 +117,119 @@ var object2 = {
     func: printElement
 };
 object.func();
+// 実行結果: undefind
 object2.func();
+// 実行結果: undefind
+// オブジェクト指向
+// class Car {
+// インスタンス変数
+// color: string;
+// constructorメソッドで初期値を設定
+// constructor(color: string) {
+// this.color = color;
+//   constructor(public color: string) {
+// }
+// デフォルト値を設定することも可能です
+// price: number = 1000000;
+// capacity: number = 4;
+// introduceCar(): void {
+//   console.log(`これは、${this.capacity}人乗りの車で、色は${this.color}、値段は${this.price}円です。`);  
+// }
+// }
+// const car1 = new Car("red");
+// console.log(car1.color);
+// // インスタンス変数を使用するには次のようにインスタンス.プロパティ名と書きます。
+// console.log(car1.price);
+// public クラスの外でもアクセス可---------------------
+// class Car {
+//   // クラス外からもアクセスが可能
+//   price: number = 1000000;
+//   // publicをつけなくても capacity は public変数になる
+//   capacity: number = 4;
+//   introduceCar(): void {
+//     console.log(`これは、${this.capacity}人乗りの車で、値段は${this.price}円です。`);
+//   }
+// }
+// const car = new Car();
+// // publicなプロパティ、メソッドにはインスタンス後もアクセスが可能
+// console.log(car.price);
+// console.log(car.capacity);
+//protected 定義されたクラスとそのクラスを継承したクラス内のみアクセス可------------------
+// class Car {
+//   protected price: number;
+//   protected capacity: number;
+//   constructor() {
+//     this.price = 1000000;
+//     this.capacity = 4;
+//   }
+//   protected introduceCar(): void {
+//     console.log(`これは、${this.capacity}人乗りの車で、値段は${this.price}円です。`);
+//   }
+// }
+// class Truck extends Car {
+//   constructor() {
+//     super();
+//     this.price = 4000000;
+//     this.introduceCar();
+//   }
+// }
+// const truck = new Truck();
+// // インスタンス化された後は protected のプロパティやメソッドにはアクセスできない。
+// console.log(truck.price);
+// truck.introduceCar();
+// private 定義されたクラス内でのみアクセス可-----------------
+// class Car {
+//   private price: number;
+//   private capacity: number;
+//   constructor() {
+//     this.price = 1000000;
+//     this.capacity = 4;
+//   }
+//   private introduceCar(): void {
+//     console.log(`これは、${this.capacity}人乗りの車で、値段は${this.price}円です。`);
+//   }
+// }
+// class Truck extends Car {
+//   constructor() {
+//     super();
+//     // コンパイルエラーが出る
+//     this.price = 4000000;
+//     // コンパイルエラーが出る
+//     this.introduceCar();
+//   }
+// }
+// const car = new Car();
+// // コンパイルエラーが出る
+// console.log(car.price);
+// car.introduceCar();
+// const truck = new Truck();
+// // コンパイルエラーが出る
+// console.log(truck.price);
+// truck.introduceCar();
+// ゲッター --------------------
+// class Car {
+//   private _color: string;
+//   private _price: number;
+//   constructor() {
+//     this._color = "red";
+//     this._price = 1000000;
+//   }
+//   get color() {
+//     return this._color;
+//   }
+// }
+// const car = new Car();
+// console.log(car.color);
+// セッター ---------------------
+class Car {
+    constructor() {
+        this._color = "red";
+        this._price = 1000000;
+    }
+    set price(price) {
+        this._price = price;
+    }
+}
+const car = new Car();
+car.price = 2000000;
+// console.log(car.color);
