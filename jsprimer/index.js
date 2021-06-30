@@ -77,3 +77,30 @@ if (value2 === 0 || value2 === 1) {
 const str3 = "";
 console.log(!!str3);
 
+let x;
+if (!x) {
+  console.log("falsyな値なら表示", x);
+}
+
+let x1;
+if ( x1 === undefined) {
+  console.log("xがundefinedなら表示", x1);
+}
+
+// ここではNaNにしか変換できないので表示できない
+const userInput = "任意の文字列";
+const num = Number.parseInt(userInput, 10);
+if (!Number.isNaN(num)) {
+  console.log("NaNではない値にパースできた", num);
+}
+
+function sum(...values) {
+  return values.reduce((total3, value2) => {
+    return total3 + value2;
+  }, 0);
+}
+console.log(value2);
+const x2 = 1, z = 10;
+let y2 = 5;
+console.log(sum(x2, y2, z));
+
