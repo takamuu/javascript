@@ -218,29 +218,38 @@ const mulA = x => { return x * x; }; // ブロックの中でreturn
 const mulB = x => x * x;            // 1行のみの場合はreturnとブロックを省略できる
 
 // mapメソッドは、配列の要素を順番にコールバック関数へ渡し、そのコールバック関数が返した値を新しい配列にして返す
-const array = [1, 2, 3];
+const array4 = [1, 2, 3];
 // 1,2,3と順番に値が渡されコールバック関数（匿名関数）が処理する
-const doubleArray = array.map(function(value) {
+const doubleArray = array4.map(function(value) {
     return value * 2; // 返した値をまとめた配列ができる
 });
 console.log(doubleArray); // => [2, 4, 6]
 
-const array = [1, 2, 3];
+const array5 = [1, 2, 3];
 // 仮引数が1つなので`()`を省略できる
 // 関数の処理が1つの式なので`return`文を省略できる
-const doubleArray = array.map(value => value * 2);
-console.log(doubleArray); // => [2, 4, 6]
+const doubleArray2 = array5.map(value => value * 2);
+console.log(doubleArray2); // => [2, 4, 6]
 
 // コールバック関数---------------------
 // 引数として渡される関数のことをコールバック関数と呼びます。 
 // 一方、コールバック関数を引数として使う関数やメソッドのことを高階関数と呼びます。
-const array = [1, 2, 3];
+const array6 = [1, 2, 3];
 const output = (value) => {
     console.log(value);
 };
-array.forEach(output);
+array6.forEach(output);
 // 次のように実行しているのと同じ
 // output(1); => 1
 // output(2); => 2
 // output(3); => 3
 
+console.log(1);
+
+// 文と式
+const fn2 = function() {
+  return 1;
+};
+console.log(fn2());
+
+// 条件分岐
