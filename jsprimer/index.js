@@ -253,3 +253,165 @@ const fn2 = function() {
 console.log(fn2());
 
 // 条件分岐
+
+// ループと反復処理-------------------------------
+
+let total2 = 0; // totalの初期値は0
+// for文の実行フロー
+// iを0で初期化
+// iが10未満（条件式を満たす）ならfor文の処理を実行
+// iに1を足し、再び条件式の判定へ
+for (let i = 0; i < 10; i++) {
+    total2 += i + 1; // 1から10の値をtotalに加算している
+}
+console.log(total2); // => 55
+
+// 配列の forEach メソッド
+const array8 = [1, 2, 3]
+array.forEach(currentValue => {
+  console.log(currentValue);
+});
+
+// for文の数値の合計と同じ sum関数 を forEachメソッドで実装
+function sum2(numbers) {
+  let total = 0;
+  numbers.forEach(num => {
+    total += num;
+  });
+  return total;
+}
+sum2([1, 2, 3, 4, 5]);
+
+// numbers[i]はnumbersに入っている配列のi番目をとってくる
+// 引数の`num`が偶数ならtrueを返す
+function isEven(num) {
+    return num % 2 === 0;
+}
+// 引数の`numbers`に偶数が含まれているならtrueを返す
+function isEvenIncluded(numbers) {
+    let isEvenIncluded = false;
+    for (let i = 0; i < numbers.length; i++) {
+        const num = numbers[i];
+        if (isEven(num)) {
+            isEvenIncluded = true;
+            break;
+        }
+    }
+    return isEvenIncluded;
+}
+const array7 = [1, 5, 10, 15, 20];
+console.log(isEvenIncluded(array7)); // => true
+
+
+// 配列のsomeメソッド
+function isEven(num) {
+  return num % 2 === 0
+}
+const numbers = [1, 5, 10, 15, 20];
+console.log(numbers.some(isEven)); // => true
+
+// continue文
+// `number`が偶数ならtrueを返す
+function isEven(num) {
+  return num % 2 === 0;
+}
+// `numbers`に含まれている偶数だけを取り出す
+function filterEven(numbers) {
+  const results = [];
+  for (let i=0; i < numbers.length; i++) {
+     const num = numbers[i];
+        // 偶数ではないなら、次のループへ
+        if (!isEven(num)) {
+            continue;
+        }
+        // 偶数を`results`に追加
+        results.push(num);
+  }
+   return results;
+}
+const array9 = [1, 5, 10, 15, 20];
+console.log(filterEven(array9)); // => [10, 20]
+
+// 配列のfilterメソッド
+function isEven(num) {
+    return num % 2 === 0;
+}
+
+const array10 = [1, 5, 10, 15, 20];
+console.log(array10.filter(isEven)); // => [10, 20]
+
+// for...in文
+const obj2 = {
+  "a": 1,
+  "b": 2,
+  "c": 3
+};
+for (const key in obj2) {
+  const value = obj2[key];
+  console.log(`key:${key}, value:${value}`);
+}
+// Object.keysメソッドは引数のオブジェクト自身が持つ列挙可能なプロパティ名の配列を返す
+const obj3 = {
+  "a": 1,
+  "b": 2,
+  "c": 3
+};
+Object.keys(obj3).forEach(key => {
+  const value = obj3[key];
+  console.log(`key:${key}, value:${value}`);
+});
+
+// ES2015 for...of文
+const array11 = [1, 2, 3];
+for (const value of array) {
+  console.log(value);
+}
+
+// reduceメソッドは、そもそも変数宣言をしていない reduceメソッドでは常に新しい値を返すことで、一つの変数の値を更新していく必要がなくなる。
+// これはconstと同じく、一度作った変数の値を変更しないため、意図しない変数の更新を避けることに繋がります。
+function sum3(numbers) {
+  return numbers.reduce((total, num) => {
+    return total + num;
+  }, 0);
+}
+console.log(sum3([1, 2, 3, 4, 5]));
+
+// {} は object のインスタンスオブジェクト
+const obj4 = new Object();
+// ↑これは 以下のオブジェクトリテラルと同じ
+const obj5 = {};
+
+// 以下のコードは悪い例 JSオブジェクトはmutableの特性をもつので、関数が受け取ったオブジェクトにプロパティを追加できてしまう
+function changeProperty(obj6) {
+  obj6.key = "value";
+  // いろんな処理…
+}
+const obj6 = {};
+changeProperty(obj6); //ここで、obj6のプロパティを変更している
+console.log(obj6.key); //なので、結果 => "value"が入っている
+
+// delete演算子 rubyとは使い方が違う
+delete obj6.key;
+console.log(obj6.key);
+
+// JSのオブジェクトプロパティ変更を防止するには、strict mode と Object.freeze を使う
+"use strict";
+const object = Object.freeze({ key: "value" });
+// freezeしたオブジェクトにプロパティを追加や変更できない
+object.key = "value2"; // => TypeError: "key" is read-only
+// console.log(object.key);
+
+'use strict';
+var v = "こんにちは！ Strict モードのスクリプト！";
+console.log(v);
+
+function strict() {
+  // 関数レベルの Strict モード構文
+  'use strict';
+  function nested() { return '私もそうです！'; }
+  return "こんにちは！ Strict モードの関数です！  " + nested();
+}
+console.log(strict());
+
+function notStrict() { return "Strict モードではありません"; }
+console.log(notStrict());
