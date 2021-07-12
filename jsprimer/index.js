@@ -570,3 +570,94 @@
 // };
 // console.log(customObject.toString()); // => "custom value"
 
+//配列-------------------
+
+// // 破壊的メソッド
+// // `array`の`index`番目の要素を削除した配列を返す関数
+// // 引数の`array`は破壊的に変更される
+// function removeAtIndex(array, index) {
+//     array.splice(index, 1);
+//     return array;
+// }
+// const array = ["A", "B", "C"];
+// // `array`から1番目の要素を削除した配列を取得
+// const newArray = removeAtIndex(array, 1);
+// console.log(newArray); // => ["A", "C"]
+// // `array`自体にも影響を与える
+// console.log(array); // => ["A", "C"]
+
+
+// // .sliceメソッドを使用することでコピーした配列を使用できる。
+// // 非破壊的であれば引数の配列への副作用がないので、注意喚起コメントは不要になる。
+// // `array`の`index`番目の要素を削除した配列を返す関数
+// function removeAtIndex(array, index) {
+//     // コピーを作成してから変更する
+//     const copiedArray = array.slice();
+//     copiedArray.splice(index, 1);
+//     return copiedArray;
+// }
+// const array = ["A", "B", "C"];
+// // `array`から1番目の要素を削除した配列を取得
+// const newArray = removeAtIndex(array, 1);
+// console.log(newArray); // => ["A", "C"]
+// // 元の`array`には影響がない
+// console.log(array); // => ["A", "B", "C"]
+
+// // Array#forEach
+// const array = [1, 2, 3];
+// array.forEach((currentValue, index, array) => {
+//     console.log(currentValue, index, array);
+//     let newArray = currentValue;
+//   });
+// //  console.log(newArray);
+// //???何故、const newArrayに代入できないのかわからない。forEachだと。
+
+// Array#map
+// const array = [1, 2, 3];
+// // 各要素に10を乗算した新しい配列を作成する
+// const newArray = array.map((currentValue, index, array) => {
+//     return currentValue * 10;
+// });
+// console.log(newArray); // => [10, 20, 30]
+// // 元の配列とは異なるインスタンス
+// console.log(array !== newArray); // => true
+
+// // Array#filter
+// const array = [1, 2, 3];
+// // 奇数の値を持つ要素だけを集めた配列を返す
+// const newArray = array.filter((currentValue, index, array) => {
+//     return currentValue % 2 === 1;
+// });
+// console.log(newArray); // => [1, 3]
+// // 元の配列とは異なるインスタンス
+// console.log(array !== newArray); // => true
+
+// Array#reduce
+// const array = [1, 2, 3];
+// // すべての要素を加算した値を返す
+// // accumulatorの初期値は`0`
+// const totalValue = array.reduce((accumulator, currentValue, index, array) => {
+//     return accumulator + currentValue;
+// }, 0);
+// // 0 + 1 + 2 + 3という式の結果が返り値になる
+// console.log(totalValue); // => 6
+
+// メソッドチェーンと高階関数
+// ECMAScriptのバージョン名と発行年
+const ECMAScriptVersions = [
+    { name: "ECMAScript 1", year: 1997 },
+    { name: "ECMAScript 2", year: 1998 },
+    { name: "ECMAScript 3", year: 1999 },
+    { name: "ECMAScript 5", year: 2009 },
+    { name: "ECMAScript 5.1", year: 2011 },
+    { name: "ECMAScript 2015", year: 2015 },
+    { name: "ECMAScript 2016", year: 2016 },
+    { name: "ECMAScript 2017", year: 2017 },
+];
+// メソッドチェーンで必要な加工処理を並べている
+const versionNames = ECMAScriptVersions
+    // 2000年以下のデータに絞り込み
+    .filter(ECMAScript => ECMAScript.year <= 2000)
+    // それぞれの要素から`name`プロパティを取り出す
+    .map(ECMAScript => ECMAScript.name);
+console.log(versionNames); // => ["ECMAScript 1", "ECMAScript 2", "ECMAScript 3"]
