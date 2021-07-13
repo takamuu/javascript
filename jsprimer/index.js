@@ -642,22 +642,196 @@
 // // 0 + 1 + 2 + 3という式の結果が返り値になる
 // console.log(totalValue); // => 6
 
-// メソッドチェーンと高階関数
-// ECMAScriptのバージョン名と発行年
-const ECMAScriptVersions = [
-    { name: "ECMAScript 1", year: 1997 },
-    { name: "ECMAScript 2", year: 1998 },
-    { name: "ECMAScript 3", year: 1999 },
-    { name: "ECMAScript 5", year: 2009 },
-    { name: "ECMAScript 5.1", year: 2011 },
-    { name: "ECMAScript 2015", year: 2015 },
-    { name: "ECMAScript 2016", year: 2016 },
-    { name: "ECMAScript 2017", year: 2017 },
-];
-// メソッドチェーンで必要な加工処理を並べている
-const versionNames = ECMAScriptVersions
-    // 2000年以下のデータに絞り込み
-    .filter(ECMAScript => ECMAScript.year <= 2000)
-    // それぞれの要素から`name`プロパティを取り出す
-    .map(ECMAScript => ECMAScript.name);
-console.log(versionNames); // => ["ECMAScript 1", "ECMAScript 2", "ECMAScript 3"]
+// // メソッドチェーンと高階関数
+// // ECMAScriptのバージョン名と発行年
+// const ECMAScriptVersions = [
+//     { name: "ECMAScript 1", year: 1997 },
+//     { name: "ECMAScript 2", year: 1998 },
+//     { name: "ECMAScript 3", year: 1999 },
+//     { name: "ECMAScript 5", year: 2009 },
+//     { name: "ECMAScript 5.1", year: 2011 },
+//     { name: "ECMAScript 2015", year: 2015 },
+//     { name: "ECMAScript 2016", year: 2016 },
+//     { name: "ECMAScript 2017", year: 2017 },
+// ];
+// // メソッドチェーンで必要な加工処理を並べている
+// const versionNames = ECMAScriptVersions
+//     // 2000年以下のデータに絞り込み
+//     .filter(ECMAScript => ECMAScript.year <= 2000)
+//     // それぞれの要素から`name`プロパティを取り出す
+//     .map(ECMAScript => ECMAScript.name);
+// console.log(versionNames); // => ["ECMAScript 1", "ECMAScript 2", "ECMAScript 3"]
+
+// // 文字列
+// console.log("B" > "A");
+
+// const str = "JavaScript";
+// const searchWord = "Script";
+// const index = str.indexOf(searchWord);
+// if (index !== -1) {
+//     console.log(`${searchWord}が見つかりました`);
+// } else {
+//     console.log(`${searchWord}は見つかりませんでした`);
+// }
+
+// 正規表現
+// // 正規表現リテラルはロード時にパターンが評価され、例外が発生する
+// function main() {
+//     // `[`は対となる`]`を組み合わせる特殊文字であるため、単独で書けない
+//     const invalidPattern = /[/;
+// }
+
+// // `main`関数を呼び出さなくても例外が発生する
+
+// const spaceCount = 3;
+// // `/\s{3}/`の正規表現を文字列から作成する
+// // "\"がエスケープ文字であるため、"\"自身を文字列として書くには、"\\"のように2つ書く
+// const pattern = new RegExp(`\\s{${spaceCount}}`);
+
+// const str = "ABC123EFG";
+// const searchPattern = /\d{3}/;
+// console.log(str.search(searchPattern)); // => 3
+
+// console.log("文字列".match(/字/)); // => null
+
+// const str = "ABC あいう DE えお";
+// const alphabetsPattern = /[a-zA-Z]+/;
+// // gフラグなしでは、最初の結果のみを含んだ特殊な配列を返す
+// const results = str.match(alphabetsPattern);
+// console.log(results.length); // => 1
+// // マッチした文字列はインデックスでアクセスできる
+// console.log(results[0]); // => "ABC"
+// // マッチした文字列の先頭のインデックス
+// console.log(results.index); // => 0
+// // 検索対象となった文字列全体
+// console.log(results.input); // => "ABC あいう DE えお"
+
+// console.log("ABC".match(alphabetsPattern));
+
+// const str = "ABC あいう DE えお";
+// const alphabetsPattern = /[a-zA-Z]+/g;
+// // gフラグありでは、すべての検索結果を含む配列を返す
+// const resultsWithG = str.match(alphabetsPattern);
+// console.log(resultsWithG);
+// console.log(resultsWithG.length); // => 2
+// console.log(resultsWithG[0]); // => "ABC"
+// console.log(resultsWithG[1]); // => "DE"
+// // indexとinputはgフラグありの場合は追加されない
+// console.log(resultsWithG.index); // => undefined
+// console.log(resultsWithG.input); // => undefined
+
+// const str = "ABC あいう DE えお";
+// const alphabetsPattern = /[a-zA-Z]+/g;
+// // matchAllはIteratorを返す
+// const matchesIterator = str.matchAll(alphabetsPattern);
+// console.log(matchesIterator);
+// for (const match of matchesIterator) {
+//     // マッチした要素ごとの情報を含んでいる
+//     console.log(`match: "${match[0]}", index: ${match.index}, input: "${match.input}"`);
+// }
+// // 次の順番でコンソールに出力される
+// // match: "ABC", index: 0, input: "ABC あいう DE えお"
+// // match: "DE", index: 8, input: "ABC あいう DE えお"
+
+// // "ECMAScript (数字+)"にマッチするが、欲しい文字列は数字の部分のみ
+// const pattern = /ECMAScript (\d+)/;
+// // 返り値は0番目がマッチした全体、1番目がキャプチャの1番目というように対応している
+// // [マッチした全部の文字列, キャプチャの1番目, キャプチャの2番目 ....]
+// const [all, capture1] = "ECMAScript 6".match(pattern);
+// console.log(all); // => "ECMAScript 6"
+// console.log(capture1); // => "6"
+
+// // "ES(数字+)"にマッチするが、欲しい文字列は数字の部分のみ
+// const pattern = /ES(\d+)/g;
+// // iteratorを返す
+// const matchesIterator = "ES2015、ES2016、ES2017".matchAll(pattern);
+// for (const match of matchesIterator) {
+//     // マッチした要素ごとの情報を含んでいる
+//     // 0番目はマッチした文字列全体、1番目がキャプチャの1番目である数字
+//     console.log(`match: "${match[0]}", capture1: ${match[1]}, index: ${match.index}, input: "${match.input}"`);
+// }
+// // 次の順番でコンソールに出力される
+// // match: "ES2015", capture1: 2015, index: 0, input: "ES2015、ES2016、ES2017"
+// // match: "ES2016", capture1: 2016, index: 7, input: "ES2015、ES2016、ES2017"
+// // match: "ES2017", capture1: 2017, index: 14, input: "ES2015、ES2016、ES2017"
+
+// // 文字列の置き換え
+// const str = "文字列";
+// const newStr = str.replace("文字", "");
+// console.log(newStr);
+
+// // 検索対象となる文字列
+// const str = "にわにはにわにわとりがいる";
+// // 文字列を指定した場合は、最初に一致したものだけが置換される
+// console.log(str.replace("にわ", "niwa")); // => "niwaにはにわにわとりがいる"
+// // `g`フラグなし正規表現の場合は、最初に一致したものだけが置換される
+// console.log(str.replace(/にわ/, "niwa")); // => "niwaにはにわにわとりがいる"
+// // `g`フラグあり正規表現の場合は、繰り返し置換を行う
+// console.log(str.replace(/にわ/g, "niwa")); // => "niwaにはniwaniwaとりがいる"
+
+// // 検索対象となる文字列
+// const str = "???";
+// // replaceメソッドに文字列を指定した場合は、最初に一致したものだけが置換される
+// console.log(str.replace("?", "!")); // => "!??"
+// // replaceAllメソッドに文字列を指定した場合は、一致したものがすべて置換される
+// console.log(str.replaceAll("?", "!")); // => "!!!"
+// // replaceメソッドの場合は、正規表現の特殊文字はエスケープが必要となる
+// console.log(str.replace(/\?/g, "!")); // => "!!!"
+// // replaceAllメソッドにも正規表現を渡せるが、この場合はエスケープが必要となるためreplaceと同じ
+// console.log(str.replaceAll(/\?/g, "!")); // => "!!!"
+
+// function toDateJa(dateString) {
+//     // パターンにマッチしたときのみ、コールバック関数で置換処理が行われる
+//     return dateString.replace(/(\d{4})-(\d{2})-(\d{2})/g, (all, year, month, day) => {
+//         // `all`には、マッチした文字列全体が入っているが今回は利用しない
+//         // `all`が次の返す値で置換されるイメージ
+//         return `${year}年${month}月${day}日`;
+       
+//     });
+// }
+// // マッチしない文字列の場合は、そのままの文字列が返る
+// console.log(toDateJa("本日ハ晴天ナリ")); // => "本日ハ晴天ナリ"
+// // マッチした場合は置換した結果を返す
+// console.log(toDateJa("今日は2017-03-01です")); // => "今日は2017年03月01日です"
+
+// // ベースURLとパスを結合した文字列を返す
+// function baseJoin(baseURL, pathname) {
+//     // 末尾に / がある場合は、/ を削除してから結合する
+//     const stripSlashBaseURL = baseURL.replace(/\/$/, "");
+//     return stripSlashBaseURL + pathname;
+// }
+// // `baseURL`と`pathname`にあるリソースを取得する
+// function getResource(baseURL, pathname) {
+//     const url = baseJoin(baseURL, pathname);
+//     // baseURLの末尾に / があってもなくても同じ結果となる
+//     console.log(url); // => "http://example.com/resouces/example.js"
+//     // 省略) リソースを取得する処理...
+// }
+// const baseURL = "http://example.com/resouces/";
+// const pathname = "/example.js";
+// getResource(baseURL, pathname);
+
+// テンプレートを順番どおりに結合した文字列を返すタグ関数
+function stringRaw(strings, ...values) {
+    
+    // // stringsは文字列のパーツが${}で区切られた配列となる
+    // console.log(strings); // => ["template "," literal ",""]
+    // // valuesには${}の評価値が順番に入る
+    // console.log(values); // => [0, 1]
+
+    // resultの初期値はstrings[0]の値となる
+    return strings.reduce((result, str, i) => {
+      console.log(result);
+      console.log(str);
+      console.log(i);
+        console.log([result, values[i - 1], str]);
+    //     // それぞれループで次のような出力となる
+    //     // 1度目: ["template ", 0, " literal "]
+    //     // 2度目: ["template 0 literal ", 1, ""]
+        return result + values[i - 1] + str;
+    });
+}
+// 関数`テンプレートリテラル` という形で呼び出す
+console.log(stringRaw`template ${0} literal ${1}`); // => "template 0 literal 1"
+
+// ??? タグ付きテンプレート関数は理解できなかったので、あとで再度学習！！！？？？ 
