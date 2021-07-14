@@ -811,27 +811,79 @@
 // const pathname = "/example.js";
 // getResource(baseURL, pathname);
 
-// テンプレートを順番どおりに結合した文字列を返すタグ関数
-function stringRaw(strings, ...values) {
+// // テンプレートを順番どおりに結合した文字列を返すタグ関数
+// function stringRaw(strings, ...values) {
     
-    // // stringsは文字列のパーツが${}で区切られた配列となる
-    // console.log(strings); // => ["template "," literal ",""]
-    // // valuesには${}の評価値が順番に入る
-    // console.log(values); // => [0, 1]
+//     // // stringsは文字列のパーツが${}で区切られた配列となる
+//     // console.log(strings); // => ["template "," literal ",""]
+//     // // valuesには${}の評価値が順番に入る
+//     // console.log(values); // => [0, 1]
 
-    // resultの初期値はstrings[0]の値となる
-    return strings.reduce((result, str, i) => {
-      console.log(result);
-      console.log(str);
-      console.log(i);
-        console.log([result, values[i - 1], str]);
-    //     // それぞれループで次のような出力となる
-    //     // 1度目: ["template ", 0, " literal "]
-    //     // 2度目: ["template 0 literal ", 1, ""]
-        return result + values[i - 1] + str;
+//     // resultの初期値はstrings[0]の値となる
+//     return strings.reduce((result, str, i) => {
+//       console.log(result);
+//       console.log(str);
+//       console.log(i);
+//         console.log([result, values[i - 1], str]);
+//     //     // それぞれループで次のような出力となる
+//     //     // 1度目: ["template ", 0, " literal "]
+//     //     // 2度目: ["template 0 literal ", 1, ""]
+//         return result + values[i - 1] + str;
+//     });
+// }
+// // 関数`テンプレートリテラル` という形で呼び出す
+// console.log(stringRaw`template ${0} literal ${1}`); // => "template 0 literal 1"
+
+// // ??? タグ付きテンプレート関数は理解できなかったので、あとで再度学習！！！？？？ 
+
+// // 文字列とUnicode
+// console.log("あ".codePointAt(0));
+// console.log(String.fromCodePoint(12354));
+// console.log(String.fromCodePoint(0x3042));
+
+// const codePointOfあ = "あ".codePointAt(0);
+
+// const hexOfあ = codePointOfあ.toString(16);
+// console.log(hexOfあ);
+// console.log("\u{3042}");
+
+// 文字列をCode Unit(16進数)の配列にして返す
+function convertCodeUnits(str) {
+    const codeUnits = [];
+    for (let i = 0; i < str.length; i++) {
+        codeUnits.push(str.charCodeAt(i).toString(16));
+    }
+    return codeUnits;
+}
+// 文字列をCode Point(16進数)の配列にして返す
+function convertCodePoints(str) {
+    return Array.from(str).map(char => {
+        return char.codePointAt(0).toString(16);
     });
 }
-// 関数`テンプレートリテラル` という形で呼び出す
-console.log(stringRaw`template ${0} literal ${1}`); // => "template 0 literal 1"
 
-// ??? タグ付きテンプレート関数は理解できなかったので、あとで再度学習！！！？？？ 
+const str = "リンゴ🍎";
+const codeUnits = convertCodeUnits(str);
+console.log(codeUnits); // => ["30ea", "30f3", "30b4", "d83c", "df4e"]
+const codePoints = convertCodePoints(str);
+console.log(codePoints); // => ["30ea", "30f3", "30b4", "1f34e"]
+
+// Code Unit（上位サロゲート + 下位サロゲート）
+console.log("\uD83C\uDF4E"); // => "🍎"
+// Code Point
+console.log("\u{1F34E}"); // => "🍎"
+
+// const [all, fish] = "𩸽のひらき".match(/(.)のひらき/);
+// console.log(all); // => "\ude3dのひらき"
+// console.log(fish); // => "\ude3d"
+
+const [all, fish] = "𩸽のひらき".match(/(.)のひらき/u);
+console.log(all); // => "𩸽のひらき"
+console.log(fish); // => "𩸽"
+
+// Code Pointごとの配列にする
+// Array.fromメソッドはIteratorを配列にする
+const codePoints = Array.from("リンゴ🍎");
+console.log(codePoints); // => ["リ", "ン", "ゴ", "🍎"]
+// Code Pointの個数を数える
+console.log(codePoints.length); // => 4
