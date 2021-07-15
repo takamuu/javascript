@@ -847,43 +847,114 @@
 // console.log(hexOfあ);
 // console.log("\u{3042}");
 
-// 文字列をCode Unit(16進数)の配列にして返す
-function convertCodeUnits(str) {
-    const codeUnits = [];
-    for (let i = 0; i < str.length; i++) {
-        codeUnits.push(str.charCodeAt(i).toString(16));
+// // 文字列をCode Unit(16進数)の配列にして返す
+// function convertCodeUnits(str) {
+//     const codeUnits = [];
+//     for (let i = 0; i < str.length; i++) {
+//         codeUnits.push(str.charCodeAt(i).toString(16));
+//     }
+//     return codeUnits;
+// }
+// // 文字列をCode Point(16進数)の配列にして返す
+// function convertCodePoints(str) {
+//     return Array.from(str).map(char => {
+//         return char.codePointAt(0).toString(16);
+//     });
+// }
+
+// const str = "リンゴ🍎";
+// const codeUnits = convertCodeUnits(str);
+// console.log(codeUnits); // => ["30ea", "30f3", "30b4", "d83c", "df4e"]
+// const codePoints = convertCodePoints(str);
+// console.log(codePoints); // => ["30ea", "30f3", "30b4", "1f34e"]
+
+// // Code Unit（上位サロゲート + 下位サロゲート）
+// console.log("\uD83C\uDF4E"); // => "🍎"
+// // Code Point
+// console.log("\u{1F34E}"); // => "🍎"
+
+// // const [all, fish] = "𩸽のひらき".match(/(.)のひらき/);
+// // console.log(all); // => "\ude3dのひらき"
+// // console.log(fish); // => "\ude3d"
+
+// const [all, fish] = "𩸽のひらき".match(/(.)のひらき/u);
+// console.log(all); // => "𩸽のひらき"
+// console.log(fish); // => "𩸽"
+
+// // Code Pointごとの配列にする
+// // Array.fromメソッドはIteratorを配列にする
+// const codePoints = Array.from("リンゴ🍎");
+// console.log(codePoints); // => ["リ", "ン", "ゴ", "🍎"]
+// // Code Pointの個数を数える
+// console.log(codePoints.length); // => 4
+
+// ラッパーオブジェクト
+// String#toUpperCaseを呼び出している
+{
+console.log("string".toUpperCase()); // => "STRING"
+
+// "input value"の値をラップしたStringのインスタンスを生成
+const str = new String("input value");
+// StringのインスタンスメソッドであるtoUpperCaseを呼び出す
+str.toUpperCase(); // => "INPUT VALUE"
+console.log(str.toUpperCase());
+}
+
+// プリミティブの文字列は"string"型
+{
+const str = "文字列";
+console.log(typeof str); // => "string"
+// ラッパーオブジェクトは"object"型
+const stringWrapper = new String("文字列");
+console.log(typeof stringWrapper); // => "object"
+}
+{
+const str = "string";
+// プリミティブ型の値に対してメソッド呼び出しを行う
+str.toUpperCase();
+// `str`へアクセスする際に"string"がラッパーオブジェクトへ変換され、
+// ラッパーオブジェクトはStringのインスタンスなのでメソッドを呼び出せる
+// つまり、上のコードは下のコードと同じ意味である
+(new String(str)).toUpperCase();
+}
+// const stringWrapper = new String("文字列");
+// // プリミティブ型の値を取得する
+// console.log(stringWrapper.valueOf()); // => "文字列"
+
+// 関数とスコープ
+{
+    // OUTERブロックスコープ
+    const x = "outer";
+    {
+        // INNERブロックスコープ
+        const x = "inner";
+        // 現在のスコープ(INNERブロックスコープ)にある`x`を参照する
+        console.log(x); // => "inner"
     }
-    return codeUnits;
-}
-// 文字列をCode Point(16進数)の配列にして返す
-function convertCodePoints(str) {
-    return Array.from(str).map(char => {
-        return char.codePointAt(0).toString(16);
-    });
+    // 現在のスコープ(OUTERブロックスコープ)にある`x`を参照する
+    console.log(x); // => "outer"
 }
 
-const str = "リンゴ🍎";
-const codeUnits = convertCodeUnits(str);
-console.log(codeUnits); // => ["30ea", "30f3", "30b4", "d83c", "df4e"]
-const codePoints = convertCodePoints(str);
-console.log(codePoints); // => ["30ea", "30f3", "30b4", "1f34e"]
+// グローバル変数はどのスコープからも参照できる
+const globalVariable = "グローバル";
+// ブロックスコープ
+{
+    // ブロックスコープ内には該当する変数が定義されてない -> 外側のスコープへ
+    console.log(globalVariable); // => "グローバル"
+}
+// 関数スコープ
+function fn() {
+    // 関数ブロックスコープ内には該当する変数が定義されてない -> 外側のスコープへ
+    console.log(globalVariable); // => "グローバル"
+}
+fn();
 
-// Code Unit（上位サロゲート + 下位サロゲート）
-console.log("\uD83C\uDF4E"); // => "🍎"
-// Code Point
-console.log("\u{1F34E}"); // => "🍎"
-
-// const [all, fish] = "𩸽のひらき".match(/(.)のひらき/);
-// console.log(all); // => "\ude3dのひらき"
-// console.log(fish); // => "\ude3d"
-
-const [all, fish] = "𩸽のひらき".match(/(.)のひらき/u);
-console.log(all); // => "𩸽のひらき"
-console.log(fish); // => "𩸽"
-
-// Code Pointごとの配列にする
-// Array.fromメソッドはIteratorを配列にする
-const codePoints = Array.from("リンゴ🍎");
-console.log(codePoints); // => ["リ", "ン", "ゴ", "🍎"]
-// Code Pointの個数を数える
-console.log(codePoints.length); // => 4
+// {
+// console.log(x);
+// let x = "letのx";
+// }
+// {
+//   // var宣言より前に参照してもエラーにならない
+// console.log(x); // => undefined
+// var x = "varのx";
+// }
