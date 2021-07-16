@@ -888,66 +888,66 @@
 // // Code Pointの個数を数える
 // console.log(codePoints.length); // => 4
 
-// ラッパーオブジェクト
-// String#toUpperCaseを呼び出している
-{
-console.log("string".toUpperCase()); // => "STRING"
+// // ラッパーオブジェクト
+// // String#toUpperCaseを呼び出している
+// {
+// console.log("string".toUpperCase()); // => "STRING"
 
-// "input value"の値をラップしたStringのインスタンスを生成
-const str = new String("input value");
-// StringのインスタンスメソッドであるtoUpperCaseを呼び出す
-str.toUpperCase(); // => "INPUT VALUE"
-console.log(str.toUpperCase());
-}
+// // "input value"の値をラップしたStringのインスタンスを生成
+// const str = new String("input value");
+// // StringのインスタンスメソッドであるtoUpperCaseを呼び出す
+// str.toUpperCase(); // => "INPUT VALUE"
+// console.log(str.toUpperCase());
+// }
 
-// プリミティブの文字列は"string"型
-{
-const str = "文字列";
-console.log(typeof str); // => "string"
-// ラッパーオブジェクトは"object"型
-const stringWrapper = new String("文字列");
-console.log(typeof stringWrapper); // => "object"
-}
-{
-const str = "string";
-// プリミティブ型の値に対してメソッド呼び出しを行う
-str.toUpperCase();
-// `str`へアクセスする際に"string"がラッパーオブジェクトへ変換され、
-// ラッパーオブジェクトはStringのインスタンスなのでメソッドを呼び出せる
-// つまり、上のコードは下のコードと同じ意味である
-(new String(str)).toUpperCase();
-}
+// // プリミティブの文字列は"string"型
+// {
+// const str = "文字列";
+// console.log(typeof str); // => "string"
+// // ラッパーオブジェクトは"object"型
 // const stringWrapper = new String("文字列");
-// // プリミティブ型の値を取得する
-// console.log(stringWrapper.valueOf()); // => "文字列"
+// console.log(typeof stringWrapper); // => "object"
+// }
+// {
+// const str = "string";
+// // プリミティブ型の値に対してメソッド呼び出しを行う
+// str.toUpperCase();
+// // `str`へアクセスする際に"string"がラッパーオブジェクトへ変換され、
+// // ラッパーオブジェクトはStringのインスタンスなのでメソッドを呼び出せる
+// // つまり、上のコードは下のコードと同じ意味である
+// (new String(str)).toUpperCase();
+// }
+// // const stringWrapper = new String("文字列");
+// // // プリミティブ型の値を取得する
+// // console.log(stringWrapper.valueOf()); // => "文字列"
 
-// 関数とスコープ
-{
-    // OUTERブロックスコープ
-    const x = "outer";
-    {
-        // INNERブロックスコープ
-        const x = "inner";
-        // 現在のスコープ(INNERブロックスコープ)にある`x`を参照する
-        console.log(x); // => "inner"
-    }
-    // 現在のスコープ(OUTERブロックスコープ)にある`x`を参照する
-    console.log(x); // => "outer"
-}
+// // 関数とスコープ
+// {
+//     // OUTERブロックスコープ
+//     const x = "outer";
+//     {
+//         // INNERブロックスコープ
+//         const x = "inner";
+//         // 現在のスコープ(INNERブロックスコープ)にある`x`を参照する
+//         console.log(x); // => "inner"
+//     }
+//     // 現在のスコープ(OUTERブロックスコープ)にある`x`を参照する
+//     console.log(x); // => "outer"
+// }
 
-// グローバル変数はどのスコープからも参照できる
-const globalVariable = "グローバル";
-// ブロックスコープ
-{
-    // ブロックスコープ内には該当する変数が定義されてない -> 外側のスコープへ
-    console.log(globalVariable); // => "グローバル"
-}
-// 関数スコープ
-function fn() {
-    // 関数ブロックスコープ内には該当する変数が定義されてない -> 外側のスコープへ
-    console.log(globalVariable); // => "グローバル"
-}
-fn();
+// // グローバル変数はどのスコープからも参照できる
+// const globalVariable = "グローバル";
+// // ブロックスコープ
+// {
+//     // ブロックスコープ内には該当する変数が定義されてない -> 外側のスコープへ
+//     console.log(globalVariable); // => "グローバル"
+// }
+// // 関数スコープ
+// function fn() {
+//     // 関数ブロックスコープ内には該当する変数が定義されてない -> 外側のスコープへ
+//     console.log(globalVariable); // => "グローバル"
+// }
+// fn();
 
 // {
 // console.log(x);
@@ -958,3 +958,97 @@ fn();
 // console.log(x); // => undefined
 // var x = "varのx";
 // }
+
+// // 関数とthis
+// "use strict";
+// function outer() {
+//     console.log(this); // => undefined
+//     function inner() {
+//         console.log(this); // => undefined
+//     }
+//     // `inner`関数呼び出しのベースオブジェクトはない
+//     inner();
+// }
+// // `outer`関数呼び出しのベースオブジェクトはない
+// outer();
+
+// const person = {
+//     fullName: "Brendan Eich",
+//     sayName: function() {
+//         // `person.fullName`と書いているのと同じ
+//         return this.fullName;
+//     }
+// };
+// // `person.fullName`を出力する
+// console.log(person.sayName()); // => "Brendan Eich"
+
+// // callメソッドを使用してthisを明示的に指定して関数を実行
+// "use strict";
+// function say(message) {
+//     return `${message} ${this.fullName}！`;
+// }
+// const person = {
+//     fullName: "Brendan Eich"
+// };
+// // `this`を`person`にして`say`関数を呼びだす
+// console.log(say.call(person, "こんにちは")); // => "こんにちは Brendan Eich！"
+// // `say`関数をそのまま呼び出すと`this`は`undefined`となるため例外が発生
+// say("こんにちは"); // => TypeError: Cannot read property 'fullName' of undefined
+
+
+// // applyメソッド（第一引数にthisを指定、第二引数に関数の引数を配列として渡す）
+// "use strict";
+// function say(message) {
+//     return `${message} ${this.fullName}！`;
+// }
+// const person = {
+//     fullName: "Brendan Eich"
+// };
+// // `this`を`person`にして`say`関数を呼びだす
+// // callとは異なり引数を配列として渡す
+// console.log(say.apply(person, ["こんにちは"])); // => "こんにちは Brendan Eich！"
+// // `say`関数をそのまま呼び出すと`this`は`undefined`となるため例外が発生
+// say("こんにちは"); // => TypeError: Cannot read property 'fullName' of undefined
+
+// // callメソッドとapplyメソッドの違いは関数の引数への値の渡し方が異なるだけ
+// // thisが不要な場合はnullを渡す
+// function add(x, y) {
+//     return x + y;
+// }
+// // `this`が不要な場合は、nullを渡す
+// console.log(add.call(null, 1, 2)); // => 3
+// console.log(add.apply(null, [1, 2])); // => 3
+
+// "use strict";
+// const Prefixer = {
+//     prefix: "pre",
+//     prefixArray(strings) {
+//         // `that`は`prefixArray`メソッド呼び出しにおける`this`となる
+//         // つまり`that`は`Prefixer`オブジェクトを参照する
+//         const that = this;
+//         return strings.map(function(str) {
+//             // `this`ではなく`that`を参照する
+//             return that.prefix + "-" + str;
+//         });
+//     }
+// };
+// // `prefixArray`メソッドにおける`this`は`Prefixer`
+// const prefixedStrings = Prefixer.prefixArray(["a", "b", "c"]);
+// console.log(prefixedStrings); // => ["pre-a", "pre-b", "pre-c"]
+
+"use strict";
+const Prefixer = {
+    prefix: "pre",
+    prefixArray(strings) {
+        return strings.map((str) => {
+            // Arrow Function自体は`this`を持たない
+            // `this`は外側の`prefixArray`関数が持つ`this`を参照する
+            // そのため`this.prefix`は"pre"となる
+            return this.prefix + "-" + str;
+        });
+    }
+};
+// このとき、`prefixArray`のベースオブジェクトは`Prefixer`となる
+// つまり、`prefixArray`メソッド内の`this`は`Prefixer`を参照する
+const prefixedStrings = Prefixer.prefixArray(["a", "b", "c"]);
+console.log(prefixedStrings); // => ["pre-a", "pre-b", "pre-c"]
