@@ -1036,19 +1036,139 @@
 // const prefixedStrings = Prefixer.prefixArray(["a", "b", "c"]);
 // console.log(prefixedStrings); // => ["pre-a", "pre-b", "pre-c"]
 
-"use strict";
-const Prefixer = {
-    prefix: "pre",
-    prefixArray(strings) {
-        return strings.map((str) => {
-            // Arrow Function自体は`this`を持たない
-            // `this`は外側の`prefixArray`関数が持つ`this`を参照する
-            // そのため`this.prefix`は"pre"となる
-            return this.prefix + "-" + str;
-        });
+// "use strict";
+// const Prefixer = {
+//     prefix: "pre",
+//     prefixArray(strings) {
+//         return strings.map((str) => {
+//             // Arrow Function自体は`this`を持たない
+//             // `this`は外側の`prefixArray`関数が持つ`this`を参照する
+//             // そのため`this.prefix`は"pre"となる
+//             return this.prefix + "-" + str;
+//         });
+//     }
+// };
+// // このとき、`prefixArray`のベースオブジェクトは`Prefixer`となる
+// // つまり、`prefixArray`メソッド内の`this`は`Prefixer`を参照する
+// const prefixedStrings = Prefixer.prefixArray(["a", "b", "c"]);
+// console.log(prefixedStrings); // => ["pre-a", "pre-b", "pre-c"]
+
+// // クラス
+// // class MyClass {
+//   constructon() {
+//     // コンストラクタ関数の処理
+//     // インスタンス化されるときに自動的に呼び出される
+//   }
+// }
+
+// // クラスのインスタンス化
+// class MyClass {
+// }
+// // `MyClass`をインスタンス化する
+// const myClass = new MyClass();
+// // 毎回新しいインスタンス(オブジェクト)を作成する
+// const myClassAnother = new MyClass();
+// // それぞれのインスタンスは異なるオブジェクト
+// console.log(myClass === myClassAnother); // => false
+// // クラスのインスタンスかどうかは`instanceof`演算子で判定できる
+// console.log(myClass instanceof MyClass); // => true
+// console.log(myClassAnother instanceof MyClass); // => true
+
+// // 非推奨の例: コンストラクタで値を返すべきではない
+// class Point {
+//     constructor(x, y) {
+//         // `this`の代わりにただのオブジェクトを返せる
+//         return { x, y };
+//     }
+// }
+
+// // `new`演算子の結果はコンストラクタ関数が返したただのオブジェクト
+// const point = new Point(3, 4);
+// console.log(point); // => { x: 3, y: 4 }
+// // Pointクラスのインスタンスではない
+// console.log(point instanceof Point); // => false
+
+// // クラスのアクセッサプロパティの定義
+// class NumberWrapper {
+//     constructor(value) {
+//         this._value = value;
+//     }
+//     // `_value`プロパティの値を返すgetter
+//     get value() {
+//         console.log("getter");
+//         return this._value;
+//     }
+//     // `_value`プロパティに値を代入するsetter
+//     set value(newValue) {
+//         console.log("setter");
+//         this._value = newValue;
+//     }
+// }
+
+// const numberWrapper = new NumberWrapper(1);
+// // "getter"とコンソールに表示される
+// console.log(numberWrapper.value); // => 1
+// // "setter"とコンソールに表示される
+// numberWrapper.value = 42;
+// // "getter"とコンソールに表示される
+
+// /**
+//  * 配列のようなlengthを持つクラス
+//  */
+// class ArrayLike {
+//     constructor(items = []) {
+//         this._items = items;
+//     }
+
+//     get items() {
+//         return this._items;
+//     }
+
+//     get length() {
+//         return this._items.length;
+//     }
+
+//     set length(newLength) {
+//         const currentItemLength = this.items.length;
+//         // 現在要素数より小さな`newLength`が指定された場合、指定した要素数となるように末尾を削除する
+//         if (newLength < currentItemLength) {
+//             this._items = this.items.slice(0, newLength);
+//         } else if (newLength > currentItemLength) {
+//             // 現在要素数より大きな`newLength`が指定された場合、指定した要素数となるように末尾に空要素を追加する
+//             this._items = this.items.concat(new Array(newLength - currentItemLength));
+//         }
+//     }
+// }
+
+// const arrayLike = new ArrayLike([1, 2, 3, 4, 5]);
+// // 要素数を減らすとインデックス以降の要素が削除される
+// arrayLike.length = 2;
+// console.log(arrayLike.items.join(", ")); // => "1, 2"
+// // 要素数を増やすと末尾に空要素が追加される
+// arrayLike.length = 5;
+// console.log(arrayLike.items.join(", ")); // => "1, 2, , , "
+
+
+class ArrayWrapper {
+    constructor(array = []) {
+        this.array = array;
     }
-};
-// このとき、`prefixArray`のベースオブジェクトは`Prefixer`となる
-// つまり、`prefixArray`メソッド内の`this`は`Prefixer`を参照する
-const prefixedStrings = Prefixer.prefixArray(["a", "b", "c"]);
-console.log(prefixedStrings); // => ["pre-a", "pre-b", "pre-c"]
+
+    // rest parametersとして要素を受けつける
+    static of(...items) {
+        return new ArrayWrapper(items);
+    }
+
+    get length() {
+        return this.array.length;
+    }
+}
+
+// 配列を引数として渡している
+const arrayWrapperA = new ArrayWrapper([1, 2, 3]);
+// 要素を引数として渡している
+const arrayWrapperB = ArrayWrapper.of(1, 2, 3);
+console.log(arrayWrapperA);
+console.log(arrayWrapperB);
+console.log(arrayWrapperA.length); // => 3
+console.log(arrayWrapperB.length); // => 3
