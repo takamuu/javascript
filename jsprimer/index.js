@@ -1149,26 +1149,172 @@
 // console.log(arrayLike.items.join(", ")); // => "1, 2, , , "
 
 
-class ArrayWrapper {
-    constructor(array = []) {
-        this.array = array;
+// class ArrayWrapper {
+//     constructor(array = []) {
+//         this.array = array;
+//     }
+
+//     // rest parametersとして要素を受けつける
+//     static of(...items) {
+//         return new ArrayWrapper(items);
+//     }
+
+//     get length() {
+//         return this.array.length;
+//     }
+// }
+
+// // 配列を引数として渡している
+// const arrayWrapperA = new ArrayWrapper([1, 2, 3]);
+// // 要素を引数として渡している
+// const arrayWrapperB = ArrayWrapper.of(1, 2, 3);
+// console.log(arrayWrapperA);
+// console.log(arrayWrapperB);
+// console.log(arrayWrapperA.length); // => 3
+// console.log(arrayWrapperB.length); // => 3
+
+// class ArrayWrapper {
+//     constructor(array = []) {
+//         this.array = array;
+//         console.log(array);
+//     }
+
+//     static of(...items) {
+//         // `this`は`ArrayWrapper`を参照する
+//         return new this(items);
+//     }
+
+//     get length() {
+//         return this.array.length;
+//     }
+// }
+
+// const arrayWrapper = ArrayWrapper.of(1, 2, 3);
+// console.log(arrayWrapper);
+// console.log(arrayWrapper.length); // => 3
+
+// class ConflictClass {
+//     constructor() {
+//         // インスタンスオブジェクトに`method`を定義
+//         this.method = () => {
+//             console.log("インスタンスオブジェクトのメソッド");
+//         };
+//     }
+
+//     // クラスのプロトタイプメソッドとして`method`を定義
+//     method() {
+//         console.log("プロトタイプのメソッド");
+//     }
+// }
+
+// const conflict = new ConflictClass();
+// conflict.method(); // どちらの`method`が呼び出される？
+// console.log(conflict);
+// console.log(typeof ConflictClass.prototype);
+
+// // インスタンスの`method`プロパティを削除
+// delete conflict.method;
+// conflict.method(); // "プロトタイプメソッド"
+// console.log(conflict);
+// console.log(typeof ConflictClass.prototype);
+
+
+// function fn() {
+// }
+// // `prototype`プロパティにプロトタイプオブジェクトが存在する
+// console.log(typeof fn.prototype === "object"); // => true
+
+// class MyClass {
+// }
+// // `prototype`プロパティにプロトタイプオブジェクトが存在する
+// console.log(typeof MyClass.prototype === "object"); // => true
+
+// class MyClass {
+//     method() { }
+// }
+
+// console.log(typeof MyClass.prototype.method === "function"); // => true
+// // クラス#constructorはクラス自身を参照する
+// console.log(MyClass.prototype.constructor === MyClass); // => true
+
+// // プロトタイプチェーンの動作の疑似的なコード
+// class MyClass {
+//     method() {
+//         console.log("プロトタイプのメソッド");
+//     }
+// }
+// const instance = new MyClass();
+// // `instance.method()`を実行する場合
+// // 次のような呼び出し処理が行われている
+// // インスタンス自身が`method`プロパティを持っている場合
+// if (instance.hasOwnProperty("method")) {
+//     instance.method();
+// } else {
+//     // インスタンスの`[[Prototype]]`の参照先（`MyClass`のプロトタイプオブジェクト）を取り出す
+//     const prototypeObject = Object.getPrototypeOf(instance);
+//     // プロトタイプオブジェクトが`method`プロパティを持っている場合
+//     if (prototypeObject.hasOwnProperty("method")) {
+//         // `this`はインスタンス自身を指定して呼び出す
+//         prototypeObject.method.call(instance);
+//     }
+// }
+
+// 親クラス
+// class Parent {
+//     constructor(...args) {
+//         console.log("Parentコンストラクタの処理", ...args);
+//     }
+// }
+// // Parentを継承したChildクラスの定義
+// class Child extends Parent {
+//     constructor(...args) {
+//         // Parentのコンストラクタ処理を呼び出す
+//         super(...args);
+//         console.log("Childコンストラクタの処理", ...args);
+//     }
+// }
+// const child = new Child("引数1", "引数2");
+// // "Parentコンストラクタの処理", "引数1", "引数2"
+// // "Childコンストラクタの処理", "引数1", "引数2"
+
+// class Parent {
+//     static method() {
+//         console.log("Parent.method");
+//     }
+// }
+// class Child extends Parent {
+//     static method() {
+//         console.log("Child.method");
+//         // `super.method()`で`Parent.method`を呼びだす
+//         super.method();
+//     }
+// }
+// Child.method();
+// // コンソールには次のように出力される
+// // "Child.method"
+// // "Parent.method"
+
+class MyArray extends Array {
+    get first() {
+        if (this.length === 0) {
+            return undefined;
+        } else {
+            return this[0];
+        }
     }
 
-    // rest parametersとして要素を受けつける
-    static of(...items) {
-        return new ArrayWrapper(items);
-    }
-
-    get length() {
-        return this.array.length;
+    get last() {
+        if (this.length === 0) {
+            return undefined;
+        } else {
+            return this[this.length - 1];
+        }
     }
 }
 
-// 配列を引数として渡している
-const arrayWrapperA = new ArrayWrapper([1, 2, 3]);
-// 要素を引数として渡している
-const arrayWrapperB = ArrayWrapper.of(1, 2, 3);
-console.log(arrayWrapperA);
-console.log(arrayWrapperB);
-console.log(arrayWrapperA.length); // => 3
-console.log(arrayWrapperB.length); // => 3
+// Arrayを継承しているのでArray.fromも継承している
+// Array.fromはIterableなオブジェクトから配列インスタンスを作成する
+const array = MyArray.from([1, 2, 3, 4, 5]);
+console.log(array.length); // => 5
+console.log(array.first); // => 1
+console.log(array.last); // => 5
