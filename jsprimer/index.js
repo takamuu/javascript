@@ -1294,27 +1294,51 @@
 // // "Child.method"
 // // "Parent.method"
 
-class MyArray extends Array {
-    get first() {
-        if (this.length === 0) {
-            return undefined;
-        } else {
-            return this[0];
-        }
-    }
+// class MyArray extends Array {
+//     get first() {
+//         if (this.length === 0) {
+//             return undefined;
+//         } else {
+//             return this[0];
+//         }
+//     }
 
-    get last() {
-        if (this.length === 0) {
-            return undefined;
-        } else {
-            return this[this.length - 1];
-        }
-    }
+//     get last() {
+//         if (this.length === 0) {
+//             return undefined;
+//         } else {
+//             return this[this.length - 1];
+//         }
+//     }
+// }
+
+// // Arrayを継承しているのでArray.fromも継承している
+// // Array.fromはIterableなオブジェクトから配列インスタンスを作成する
+// const array = MyArray.from([1, 2, 3, 4, 5]);
+// console.log(array.length); // => 5
+// console.log(array.first); // => 1
+// console.log(array.last); // => 5
+
+// 例外処理
+try {
+    console.log("try節:この行は実行されます");
+    // 未定義の関数を呼び出してReferenceError例外が発生する
+    undefinedFunction();
+    // 例外が発生したため、この行は実行されません
+} catch (error) {
+    // 例外が発生したあとはこのブロックが実行される
+    console.log("catch節:この行は実行されます");
+    console.log(error instanceof ReferenceError); // => true
+    console.log(error.message); // => "undefinedFunction is not defined"
+} finally {
+    // このブロックは例外の発生に関係なく必ず実行される
+    console.log("finally節:この行は実行されます");
 }
 
-// Arrayを継承しているのでArray.fromも継承している
-// Array.fromはIterableなオブジェクトから配列インスタンスを作成する
-const array = MyArray.from([1, 2, 3, 4, 5]);
-console.log(array.length); // => 5
-console.log(array.first); // => 1
-console.log(array.last); // => 5
+try {
+    // 例外を投げる
+    throw new Error("例外が投げられました");
+} catch (error) {
+    // catch節のスコープでerrorにアクセスできる
+    console.log(error.message); // => "例外が投げられました"
+}
