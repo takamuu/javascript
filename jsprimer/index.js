@@ -1319,26 +1319,142 @@
 // console.log(array.first); // => 1
 // console.log(array.last); // => 5
 
-// 例外処理
-try {
-    console.log("try節:この行は実行されます");
-    // 未定義の関数を呼び出してReferenceError例外が発生する
-    undefinedFunction();
-    // 例外が発生したため、この行は実行されません
-} catch (error) {
-    // 例外が発生したあとはこのブロックが実行される
-    console.log("catch節:この行は実行されます");
-    console.log(error instanceof ReferenceError); // => true
-    console.log(error.message); // => "undefinedFunction is not defined"
-} finally {
-    // このブロックは例外の発生に関係なく必ず実行される
-    console.log("finally節:この行は実行されます");
-}
+// // 例外処理
+// try {
+//     console.log("try節:この行は実行されます");
+//     // 未定義の関数を呼び出してReferenceError例外が発生する
+//     undefinedFunction();
+//     // 例外が発生したため、この行は実行されません
+// } catch (error) {
+//     // 例外が発生したあとはこのブロックが実行される
+//     console.log("catch節:この行は実行されます");
+//     console.log(error instanceof ReferenceError); // => true
+//     console.log(error.message); // => "undefinedFunction is not defined"
+// } finally {
+//     // このブロックは例外の発生に関係なく必ず実行される
+//     console.log("finally節:この行は実行されます");
+// }
 
-try {
-    // 例外を投げる
-    throw new Error("例外が投げられました");
-} catch (error) {
-    // catch節のスコープでerrorにアクセスできる
-    console.log(error.message); // => "例外が投げられました"
+// try {
+//     // 例外を投げる
+//     throw new Error("例外が投げられました");
+// } catch (error) {
+//     // catch節のスコープでerrorにアクセスできる
+//     console.log(error.message); // => "例外が投げられました"
+// }
+
+// // #22 非同期処理：コールバック／Promese／Async Function----------------------------------
+// // 指定した`timeout`ミリ秒経過するまで同期的にブロックする関数
+// function blockTime(timeout) {
+//     const startTime = Date.now();
+//     // `timeout`ミリ秒経過するまで無限ループをする
+//     while (true) {
+//         const diffTime = Date.now() - startTime;
+//         if (diffTime >= timeout) {
+//             return; // 指定時間経過したら関数の実行を終了
+//         }
+//     }
+// }
+// console.log("処理を開始");
+// blockTime(5000); // 他の処理を1000ミリ秒（1秒間）ブロックする
+// console.log("この行が呼ばれるまで処理が1秒間ブロックされる");
+
+// // 指定した`timeout`ミリ秒経過するまで同期的にブロックする関数
+// function blockTime(timeout) {
+//     const startTime = Date.now();
+//     while (true) {
+//         const diffTime = Date.now() - startTime;
+//         if (diffTime >= timeout) {
+//             return; // 指定時間経過したら関数の実行を終了
+//         }
+//     }
+// }
+
+// console.log("1. setTimeoutのコールバック関数を10ミリ秒後に実行します");
+// setTimeout(() => {
+//     console.log("3. ブロックする処理を開始します");
+//     blockTime(5000); // 他の処理を5秒間ブロックする
+//     console.log("4. ブロックする処理が完了しました");
+// }, 10);
+// // ブロックする処理は非同期なタイミングで呼び出されるので、次の行が先に実行される
+// console.log("2. 同期的な処理を実行します");
+
+// // 指定した`timeout`ミリ秒経過するまで同期的にブロックする関数
+// function blockTime(timeout) {
+//     const startTime = Date.now();
+//     while (true) {
+//         const diffTime = Date.now() - startTime;
+//         if (diffTime >= timeout) {
+//             return; // 指定時間経過したら関数の実行を終了
+//         }
+//     }
+// }
+
+// const startTime = Date.now();
+// // 10ミリ秒後にコールバック関数を呼び出すようにタイマーに登録する
+// setTimeout(() => {
+//     const endTime = Date.now();
+//     console.log(`非同期処理のコールバックが呼ばれるまで${endTime - startTime}ミリ秒かかりました`);
+// }, 10);
+// console.log("ブロックする処理を開始します");
+// blockTime(1000); // 1秒間処理をブロックする
+// console.log("ブロックする処理が完了しました");
+
+// // エラーファーストコールバック
+// /**
+//  * 1000ミリ秒未満のランダムなタイミングでレスポンスを疑似的にデータ取得する関数
+//  * 指定した`path`にデータがある場合は`callback(null, レスポンス)`を呼ぶ
+//  * 指定した`path`にデータがない場合は`callback(エラー)`を呼ぶ
+//  */
+// function dummyFetch(path, callback) {
+//     setTimeout(() => {
+//         // /success からはじまるパスにはリソースがあるという設定
+//         if (path.startsWith("/success")) {
+//             callback(null, { body: `Response body of ${path}` });
+//         } else {
+//             callback(new Error("NOT FOUND"));
+//         }
+//     }, 1000 * Math.random());
+// }
+// // /success/data にリソースが存在するので、`response`にはデータが入る
+// dummyFetch("/success/data", (error, response) => {
+//     if (error) {
+//         // この行は実行されません
+//     } else {
+//         console.log(response); // => { body: "Response body of /success/data" }
+//     }
+// });
+// // /failure/data にリソースは存在しないので、`error`にはエラーオブジェクトが入る
+// dummyFetch("/failure/data", (error, response) => {
+//     if (error) {
+//         console.log(error.message); // => "NOT FOUND"
+//     } else {
+//         // この行は実行されません
+//     }
+// });
+
+// /**
+//  * リソースの取得に成功した場合は`successCallback(レスポンス)`を呼び出す
+//  * リソースの取得に失敗した場合は`failureCallback(エラー)`を呼び出す
+//  */
+// function dummyFetch(path, successCallback, failureCallback) {
+//     setTimeout(() => {
+//         if (path.startsWith("/success")) {
+//             successCallback({ body: `Response body of ${path}` });
+//         } else {
+//             failureCallback(new Error("NOT FOUND"));
+//         }
+//     }, 1000 * Math.random());
+// }
+
+function delay(timeoutMs) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, timeoutMs);
+    });
 }
+// `then`メソッドで成功時のコールバック関数だけを登録
+delay(10).then(() => {
+    console.log("10ミリ秒後に呼ばれる");
+});
