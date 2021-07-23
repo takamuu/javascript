@@ -1400,6 +1400,27 @@
 // blockTime(1000); // 1秒間処理をブロックする
 // console.log("ブロックする処理が完了しました");
 
+
+// try {
+//     setTimeout(() => {
+//         throw new Error("非同期的なエラー");
+//     }, 10);
+// } catch (error) {
+//      console.log("非同期エラーはキャッチできないため、この行は実行されません");
+// }
+// console.log("この行は実行されます");
+
+// // 非同期処理の外
+// setTimeout(() => {
+//     // 非同期処理の中
+//     try {
+//         throw new Error("エラー");
+//     } catch (error) {
+//         console.log("エラーをキャッチできる");
+//     }
+// }, 10);
+// console.log("この行は実行されます");
+
 // // エラーファーストコールバック
 // /**
 //  * 1000ミリ秒未満のランダムなタイミングでレスポンスを疑似的にデータ取得する関数
@@ -1416,6 +1437,40 @@
 //         }
 //     }, 1000 * Math.random());
 // }
+
+// Promise#then と Promise#catch
+/**
+ * 1000ミリ秒未満のランダムなタイミングでレスポンスを疑似的にデータ取得する関数
+ * 指定した`path`にデータがある場合、成功として**Resolved**状態のPromiseオブジェクトを返す
+ * 指定した`path`にデータがない場合、失敗として**Rejected**状態のPromiseオブジェクトを返す
+ */
+// function dummyFetch(path) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             if (path.startsWith("/success")) {
+//                 resolve({ body: `Response body of ${path}` });
+//             } else {
+//                 reject(new Error("NOT FOUND"));
+//             }
+//         }, 1000 * Math.random());
+//     });
+// }
+// // `then`メソッドで成功時と失敗時に呼ばれるコールバック関数を登録
+// // /success/data のリソースは存在するので成功しonFulfilledが呼ばれる
+// dummyFetch("/success/data").then(function onFulfilled(response) {
+//     console.log(response); // => { body: "Response body of /success/data" }
+// }, function onRejected(error) {
+//     // この行は実行されません
+// });
+// // /failure/data のリソースは存在しないのでonRejectedが呼ばれる
+// dummyFetch("/failure/data").then(function onFulfilled(response) {
+//     // この行は実行されません
+// }, function onRejected(error) {
+//     console.log(error); // Error: "NOT FOUND"
+// });
+
+
+
 // // /success/data にリソースが存在するので、`response`にはデータが入る
 // dummyFetch("/success/data", (error, response) => {
 //     if (error) {
@@ -1459,8 +1514,425 @@
 //     console.log("10ミリ秒後に呼ばれる");
 // });
 
-// Promise.resolve
-// const fulfilledPromise = Promise.resolve(); と同じ意味
-const fulfilledPromise = new Promise((resolve) => {
-    resolve();
+// promiseの状態
+// const promise = new Promise((resolve, reject) => {
+//     // 非同期でresolveする
+//     setTimeout(() => {
+//         resolve();
+//         // すでにresolveされているため無視される
+//         reject(new Error("エラー"));
+//     }, 16);
+// });
+// promise.then(() => {
+//     console.log("Fulfilledとなった");
+// }, (error) => {
+//     // この行は呼び出されない
+// });
+
+// const promise = new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//         resolve();
+//         resolve(); // 二度目以降のresolveやrejectは無視される
+//     }, 16);
+// });
+// promise.then(() => {
+//     console.log("最初のresolve時に一度だけ呼ばれる");
+// }, (error) => {
+//     // この行は呼び出されない
+// });
+
+
+// // Promise.resolve
+
+// // const fulfilledPromise = Promise.resolve(); と同じ意味
+// const fulfilledPromise = new Promise((resolve) => {
+//     resolve();
+// });
+
+// const promise = Promise.resolve();
+// promise.then(() => {
+//     console.log("2. コールバック関数が実行されました");
+// });
+// console.log("1. 同期的な処理が実行されました");
+
+// const promise = new Promise((resolve) => {
+//     console.log("1. resolveします");
+//     resolve();
+// });
+// promise.then(() => {
+//     console.log("3. コールバック関数が実行されました");
+// });
+// console.log("2. 同期的な処理が実行されました");
+
+
+
+// Promiseチェーン
+// 
+// // console.log(Math.random());
+// function asyncTask() {
+//     return Math.random() > 0.5
+//          ? Promise.resolve("成功")
+//         : Promise.reject(new Error("失敗"));
+// }
+
+// // asyncTask関数は新しい`Promise`インスタンスを返す
+// asyncTask()
+//       // thenメソッドは新しい`Promise`インスタンスを返す
+//     .then(function onFulfilled(value) {
+//         console.log(value); // => "成功"
+//     })
+//     // catchメソッドは新しい`Promise`インスタンスを返す
+//     .catch(function onRejected(error) {
+//         console.log(error.message); // => "失敗"
+//     });
+
+// Promise.reject(new Error("エラー")).catch(error => {
+//     console.log(error); // Error: エラー
+// }).then(() => {
+//     console.log("thenのコールバック関数が呼び出される");
+// });
+
+// function main() {
+//     return Promise.reject(new Error("エラー"));
+// }
+// // mainはRejectedなPromiseを返す
+// main().catch(error => {
+//     // asyncFunctionで発生したエラーのログを出力する
+//     console.log(error);
+//     // Promiseチェーンはそのままエラーを継続させる
+//     return Promise.reject(error);
+// }).then(() => {
+//     // 前のcatchでRejectedなPromiseが返されたため、この行は実行されません
+// }).catch(error => {
+//     console.log("メインの処理が失敗した");
+// });
+
+// // `promise`にはResolvedまたはRejectedなPromiseインスタンスがランダムで入る
+// const promise = Math.random() < 0.5 ? Promise.resolve() : Promise.reject();
+// promise.then(() => {
+//     console.log("Promise#then");
+// }).catch((error) => {
+//     console.log("Promise#catch");
+// }).finally(() => {
+//     // 成功、失敗どちらの場合でも呼び出される
+//     console.log("Promise#finally");
+// });
+
+// function dummyFetch(path) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             if (path.startsWith("/resource")) {
+//                 resolve({ body: `Response body of ${path}` });
+//             } else {
+//                 reject(new Error("NOT FOUND"));
+//             }
+//         }, 1000 * Math.random());
+//     });
+// }
+// // リソースを取得中かどうかのフラグ
+// let isLoading = true;
+// dummyFetch("/resource/A").then(response => {
+//     console.log(response);
+// }).catch(error => {
+//     console.error(error);
+// }).finally(() => {
+//     isLoading = false;
+//     console.log("Promise#finally");
+// });
+
+// Promiseチェーンで逐次処理
+
+// function dummyFetch(path) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             if (path.startsWith("/resource")) {
+//                 resolve({ body: `Response body of ${path}` });
+//             } else {
+//                 reject(new Error("NOT FOUND"));
+//             }
+//         }, 1000 * Math.random());
+//     });
+// }
+
+// const results = [];
+// // Resource Aを取得する
+// dummyFetch("/resource/A").then(response => {
+//     results.push(response.body);
+//     // Resource Bを取得する
+//     return dummyFetch("/resource/B");
+// }).then(response => {
+//     results.push(response.body);
+// }).then(() => {
+//     console.log(results); // => ["Response body of /resource/A", "Response body of /resource/B"]
+// });
+
+// // `timeoutMs`ミリ秒後にresolveする
+// function delay(timeoutMs) {
+//     return new Promise((resolve) => {
+//         setTimeout(() => {
+//             resolve(timeoutMs);
+//         }, timeoutMs);
+//     });
+// }
+// const promise1 = delay(1000);
+// const promise2 = delay(200);
+// const promise3 = delay(300);
+
+// Promise.all([promise1, promise2, promise3]).then(function(values) {
+//     console.log(values); // => [1, 2, 3]
+// });
+
+// function dummyFetch(path) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             if (path.startsWith("/resource")) {
+//                 resolve({ body: `Response body of ${path}` });
+//             } else {
+//                 reject(new Error("NOT FOUND"));
+//             }
+//         }, 1000 * Math.random());
+//     });
+// }
+
+// const fetchedPromise = Promise.all([
+//     dummyFetch("/resource/A"),
+//     dummyFetch("/resource/B")
+// ]);
+// // fetchedPromiseの結果をDestructuringでresponseA, responseBに代入している
+// fetchedPromise.then(([responseA, responseB]) => {
+//     console.log(responseA.body); // => "Response body of /resource/A"
+//     console.log(responseB.body); // => "Response body of /resource/B"
+// });
+
+// // Promise.race
+// // `timeoutMs`ミリ秒後にresolveする
+// function delay(timeoutMs) {
+//     return new Promise((resolve) => {
+//         setTimeout(() => {
+//             resolve(timeoutMs);
+//         }, timeoutMs);
+//     });
+// }
+// // 1つでもresolveまたはrejectした時点で次の処理を呼び出す
+// const racePromise = Promise.race([
+//     delay(1),
+//     delay(32),
+//     delay(64),
+//     delay(128)
+// ]);
+// racePromise.then(value => {
+//     // もっとも早く完了するのは1ミリ秒後
+//     console.log(value); // => 1
+// });
+
+// // `timeoutMs`ミリ秒後にrejectする
+// function timeout(timeoutMs) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             reject(new Error(`Timeout: ${timeoutMs}ミリ秒経過`));
+//         }, timeoutMs);
+//     });
+// }
+// function dummyFetch(path) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             if (path.startsWith("/resource")) {
+//                 resolve({ body: `Response body of ${path}` });
+//             } else {
+//                 reject(new Error("NOT FOUND"));
+//             }
+//         }, 1000 * Math.random());
+//     });
+// }
+// // 500ミリ秒以内に取得できなければ失敗時の処理が呼ばれる
+// Promise.race([
+//     dummyFetch("/resource/data"),
+//     timeout(500),
+// ]).then(response => {
+//     console.log(response.body); // => "Response body of /resource/data"
+// }).catch(error => {
+//     console.log(error.message); // => "Timeout: 500ミリ秒経過"
+// });
+
+// Async Function------------------------------------------------------------
+// async function doAsync() {
+//     return "値";
+// }
+// // doAsync関数はPromiseを返す
+// doAsync().then(value => {
+//     console.log(value); // => "値"
+// });
+
+// async function doAsync() と function doAsync() は同じ意味になる！
+// 通常の関数でPromiseインスタンスを返している
+// function doAsync() {
+//     return Promise.resolve("値");
+// }
+// doAsync().then(value => {
+//     console.log(value); // => "値"
+// });
+
+// Async Function definition ------------
+
+
+// // Async Function returns a Promise -----------
+// // 1. resolveFnは値を返している
+// // 何もreturnしていない場合はundefinedを返したのと同じ扱いとなる
+// async function resolveFn() {
+//     return "返り値";
+// }
+// resolveFn().then(value => {
+//     console.log(value); // => "返り値"
+// });
+
+// // 2. rejectFnはPromiseインスタンスを返している
+// async function rejectFn() {
+//     return Promise.reject(new Error("エラーメッセージ"));
+// }
+
+// // rejectFnはRejectedなPromiseを返すのでcatchできる
+// rejectFn().catch(error => {
+//     console.log(error.message); // => "エラーメッセージ"
+// });
+
+// // 3. exceptionFnは例外を投げている
+// async function exceptionFn() {
+//     throw new Error("例外が発生しました");
+//     // 例外が発生したため、この行は実行されません
+// }
+
+// // Async Functionで例外が発生するとRejectedなPromiseが返される
+// exceptionFn().catch(error => {
+//     console.log(error.message); // => "例外が発生しました"
+// });
+
+// await expression -----------
+
+// // Express a promise chain with an await expression
+// function dummyFetch(path) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             if (path.startsWith("/resource")) {
+//                 resolve({ body: `Response body of ${path}` });
+//             } else {
+//                 reject(new Error("NOT FOUND"));
+//             }
+//         }, 1000 * Math.random());
+//     });
+// }
+// // リソースAとリソースBを順番に取得する
+// async function fetchAB() {
+//     const results = [];
+//     const responseA = await dummyFetch("/resource/A");
+//     results.push(responseA.body);
+//     const responseB = await dummyFetch("/resource/B");
+//     results.push(responseB.body);
+//     return results;
+// }
+// // リソースを取得して出力する
+// fetchAB().then((results) => {
+//     console.log(results); // => ["Response body of /resource/A", "Response body of /resource/B"]
+// });
+
+// // Async Function and iterative processing---------------
+// function dummyFetch(path) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             if (path.startsWith("/resource")) {
+//                 resolve({ body: `Response body of ${path}` });
+//             } else {
+//                 reject(new Error("NOT FOUND"));
+//             }
+//         }, 1000 * Math.random());
+//     });
+// }
+// // 複数のリソースを順番に取得する
+// async function fetchResources(resources) {
+//     const results = [];
+//     for (let i = 0; i < resources.length; i++) {
+//         const resource = resources[i];
+//         // ループ内で非同期処理の完了を待っている
+//         const response = await dummyFetch(resource);
+//         results.push(response.body);
+//     }
+//     // 反復処理がすべて終わったら結果を返す(返り値となるPromiseを`results`でresolveする)
+//     return results;
+// }
+// // 取得したいリソースのパス配列
+// const resources = [
+//     "/resource/A",
+//     "/resource/B"
+// ];
+// // リソースを取得して出力する
+// fetchResources(resources).then((results) => {
+//     console.log(results); // => ["Response body of /resource/A", "Response body of /resource/B"]
+// });
+
+// // Combine Async Function and Promise API---------------------
+// function dummyFetch(path) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             if (path.startsWith("/resource")) {
+//                 resolve({ body: `Response body of ${path}` });
+//             } else {
+//                 reject(new Error("NOT FOUND"));
+//             }
+//         }, 1000 * Math.random());
+//     });
+// }
+// // 複数のリソースをまとめて取得する
+// async function fetchAllResources(resources) {
+//     // リソースを同時に取得する
+//     const promises = resources.map(function(resource) {
+//         return dummyFetch(resource);
+//     });
+//     // すべてのリソースが取得できるまで待つ
+//     // Promise.allは [ResponseA, ResponseB] のように結果が配列となる
+//     const responses = await Promise.all(promises);
+//     // 取得した結果からレスポンスのボディだけを取り出す
+//     return responses.map((response) => {
+//         return response.body;
+//     });
+// }
+// const resources = [
+//     "/resource/A",
+//     "/resource/B"
+// ];
+// // リソースを取得して出力する
+// fetchAllResources(resources).then((results) => {
+//     console.log(results); // => ["Response body of /resource/A", "Response body of /resource/B"]
+// });
+
+// await expressions are only available in Async Function-----------------------
+
+function dummyFetch(path) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (path.startsWith("/resource")) {
+                resolve({ body: `Response body of ${path}` });
+            } else {
+                reject(new Error("NOT FOUND"));
+            }
+        }, 1000 * Math.random());
+    });
+}
+// リソースを順番に取得する
+async function fetchResources(resources) {
+    const results = [];
+    console.log("1. fetchResourcesを開始");
+    resources.forEach(async function(resource) {
+        console.log(`2. ${resource}の取得開始`);
+        const response = await dummyFetch(resource);
+        // `dummyFetch`が完了するのは、`fetchResources`関数が返したPromiseが解決された後
+        console.log(`5. ${resource}の取得完了`);
+        results.push(response.body);
+    });
+    console.log("3. fetchResourcesを終了");
+    return results;
+}
+const resources = ["/resource/A", "/resource/B"];
+// リソースを取得して出力する
+fetchResources(resources).then((results) => {
+    console.log("4. fetchResourcesの結果を取得");
+    console.log(results); // => []
 });
