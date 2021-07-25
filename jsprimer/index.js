@@ -1903,36 +1903,126 @@
 //     console.log(results); // => ["Response body of /resource/A", "Response body of /resource/B"]
 // });
 
-// await expressions are only available in Async Function-----------------------
+// // await expressions are only available in Async Function-----------------------
 
-function dummyFetch(path) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (path.startsWith("/resource")) {
-                resolve({ body: `Response body of ${path}` });
-            } else {
-                reject(new Error("NOT FOUND"));
-            }
-        }, 1000 * Math.random());
-    });
+// function dummyFetch(path) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             if (path.startsWith("/resource")) {
+//                 resolve({ body: `Response body of ${path}` });
+//             } else {
+//                 reject(new Error("NOT FOUND"));
+//             }
+//         }, 1000 * Math.random());
+//     });
+// }
+// // リソースを順番に取得する
+// async function fetchResources(resources) {
+//     const results = [];
+//     console.log("1. fetchResourcesを開始");
+//     resources.forEach(async function(resource) {
+//         console.log(`2. ${resource}の取得開始`);
+//         const response = await dummyFetch(resource);
+//         // `dummyFetch`が完了するのは、`fetchResources`関数が返したPromiseが解決された後
+//         console.log(`5. ${resource}の取得完了`);
+//         results.push(response.body);
+//     });
+//     console.log("3. fetchResourcesを終了");
+//     return results;
+// }
+// const resources = ["/resource/A", "/resource/B"];
+// // リソースを取得して出力する
+// fetchResources(resources).then((results) => {
+//     console.log("4. fetchResourcesの結果を取得");
+//     console.log(results); // => []
+// });
+
+// // Map/Set----------------------
+// const map = new Map([["key1", "value1"], ["key2", "value2"]]);
+// // 2つのエントリーで初期化されている
+// console.log(map);
+// map.set("key3", "value3");
+// console.log(map.size); // => 3
+// map.set("key3", "value30");
+// console.log(map.get("key3")); // => "value2"
+// // キーの存在確認
+// console.log(map.has("key3")); // => true
+// console.log(map.has("foo")); // => false
+// map.delete("key3");
+// console.log(map.size); // => 2
+// // map.clear();
+// // console.log(map.size); // => 0
+
+// // Mapが持つ要素を列挙するメソッド→forEach/keys/values/entries
+// // forEachメソッド
+// const results = [];
+// map.forEach((value, key) => {
+//     results.push(`${key}:${value}`);
+// });
+// console.log(results); // => ["key1:value1","key2:value2"]
+
+// // keysメソッド
+// const keys = [];
+// // (for...of文で)keysメソッドの返り値(Iterator)を反復処理する
+// for (const key of map.keys()) {
+//     keys.push(key);
+// }
+// console.log(keys); // => ["key1","key2"]
+// // keysメソッドの返り値(Iterator)から配列を作成する
+// const keysArray = Array.from(map.keys());
+// console.log(keysArray); // => ["key1","key2"]
+
+// // entries
+// const entries = [];
+// for (const [key, value] of map.entries()) {
+//     entries.push(`${key}:${value}`);
+// }
+// console.log(entries); // => ["key1:value1","key2:value2"]
+
+// // map自身もiterableなので、for...of文で反復処理できる
+// for (const [key, value] of map) {
+//     results.push(`${key}:${value}`);
+// }
+// console.log(results); // => ["key1:value1","key2:value2","key1:value1","key2:value2"]
+
+// ショッピングカートを表現するクラス
+class ShoppingCart {
+  constructor() {
+    // 商品とその数を持つマップ
+    this.items = new Map();
+  }
+    // カートに商品を追加する
+  addItem(item) {
+    // `item`がない場合は`undefined`を返すため、Nullish coalescing演算子(`??`)を使いデフォルト値として`0`を設定する
+    const count = this.items.get(item) ?? 0;
+    this.items.set(item, count + 1); 
+  }
+    // カート内の合計金額を返す
+  getTotalPrice() {
+    return Array.from(this.items).reduce((total, [item, count]) => {
+        return total + item.price * count;
+    }, 0);
+  }
+   // カートの中身を文字列にして返す
+    toString() {
+        return Array.from(this.items).map(([item, count]) => {
+            return `${item.name}:${count}`;
+        }).join(",");
+    }
 }
-// リソースを順番に取得する
-async function fetchResources(resources) {
-    const results = [];
-    console.log("1. fetchResourcesを開始");
-    resources.forEach(async function(resource) {
-        console.log(`2. ${resource}の取得開始`);
-        const response = await dummyFetch(resource);
-        // `dummyFetch`が完了するのは、`fetchResources`関数が返したPromiseが解決された後
-        console.log(`5. ${resource}の取得完了`);
-        results.push(response.body);
-    });
-    console.log("3. fetchResourcesを終了");
-    return results;
-}
-const resources = ["/resource/A", "/resource/B"];
-// リソースを取得して出力する
-fetchResources(resources).then((results) => {
-    console.log("4. fetchResourcesの結果を取得");
-    console.log(results); // => []
-});
+const shoppingCart = new ShoppingCart();
+// 商品一覧
+const shopItems = [
+  { name: "みかん", price: 100 },
+  { name: "リンゴ", price: 200 },
+];
+
+// カートに商品を追加する
+shoppingCart.addItem(shopItems[0]);
+shoppingCart.addItem(shopItems[0]);
+shoppingCart.addItem(shopItems[1]);
+
+// 合計金額を表示する
+console.log(shoppingCart.getTotalPrice()); // => 400
+// カートの中身を表示する
+console.log(shoppingCart.toString()); // => "みかん:2,リンゴ:1"
