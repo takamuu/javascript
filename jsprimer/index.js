@@ -1986,43 +1986,121 @@
 // console.log(results); // => ["key1:value1","key2:value2","key1:value1","key2:value2"]
 
 // ショッピングカートを表現するクラス
-class ShoppingCart {
-  constructor() {
-    // 商品とその数を持つマップ
-    this.items = new Map();
-  }
-    // カートに商品を追加する
-  addItem(item) {
-    // `item`がない場合は`undefined`を返すため、Nullish coalescing演算子(`??`)を使いデフォルト値として`0`を設定する
-    const count = this.items.get(item) ?? 0;
-    this.items.set(item, count + 1); 
-  }
-    // カート内の合計金額を返す
-  getTotalPrice() {
-    return Array.from(this.items).reduce((total, [item, count]) => {
-        return total + item.price * count;
-    }, 0);
-  }
-   // カートの中身を文字列にして返す
-    toString() {
-        return Array.from(this.items).map(([item, count]) => {
-            return `${item.name}:${count}`;
-        }).join(",");
+// class ShoppingCart {
+//   constructor() {
+//     // 商品とその数を持つマップ
+//     this.items = new Map();
+//   }
+//     // カートに商品を追加する
+//   addItem(item) {
+//     // `item`がない場合は`undefined`を返すため、Nullish coalescing演算子(`??`)を使いデフォルト値として`0`を設定する
+//     const count = this.items.get(item) ?? 0;
+//     this.items.set(item, count + 1); 
+//   }
+//     // カート内の合計金額を返す
+//   getTotalPrice() {
+//     return Array.from(this.items).reduce((total, [item, count]) => {
+//         return total + item.price * count;
+//     }, 0);
+//   }
+//    // カートの中身を文字列にして返す
+//     toString() {
+//         return Array.from(this.items).map(([item, count]) => {
+//             return `${item.name}:${count}`;
+//         }).join(",");
+//     }
+// }
+// const shoppingCart = new ShoppingCart();
+// // 商品一覧
+// const shopItems = [
+//   { name: "みかん", price: 100 },
+//   { name: "リンゴ", price: 200 },
+// ];
+
+// // カートに商品を追加する
+// shoppingCart.addItem(shopItems[0]);
+// shoppingCart.addItem(shopItems[0]);
+// shoppingCart.addItem(shopItems[1]);
+
+// // 合計金額を表示する
+// console.log(shoppingCart.getTotalPrice()); // => 400
+// // カートの中身を表示する
+// console.log(shoppingCart.toString()); // => "みかん:2,リンゴ:1"
+
+
+// WeakMap-------------------------------
+// イベントリスナーを管理するマップ
+const listenersMap = new WeakMap();
+
+class EventEmitter {
+    addListener(listener) {
+        // this にひもづいたリスナーの配列を取得する
+        const listeners = listenersMap.get(this) ?? [];
+        const newListeners = listeners.concat(listener);
+        // this をキーに新しい配列をセットする
+        listenersMap.set(this, newListeners);
     }
 }
-const shoppingCart = new ShoppingCart();
-// 商品一覧
-const shopItems = [
-  { name: "みかん", price: 100 },
-  { name: "リンゴ", price: 200 },
-];
 
-// カートに商品を追加する
-shoppingCart.addItem(shopItems[0]);
-shoppingCart.addItem(shopItems[0]);
-shoppingCart.addItem(shopItems[1]);
+// 上記クラスの実行例
 
-// 合計金額を表示する
-console.log(shoppingCart.getTotalPrice()); // => 400
-// カートの中身を表示する
-console.log(shoppingCart.toString()); // => "みかん:2,リンゴ:1"
+let eventEmitter = new EventEmitter();
+// イベントリスナーを追加する
+eventEmitter.addListener(() => {
+    console.log("イベントが発火しました");
+});
+// eventEmitterへの参照がなくなったことで自動的にイベントリスナーが解放される
+eventEmitter = null;
+
+const cache = new WeakMap();
+
+function getHeight(element) {
+    if (cache.has(element)) {
+        return cache.get(element);
+    }
+    const height = element.getBoundingClientRect().height;
+    // elementオブジェクトに対して高さをひもづけて保存している
+    cache.set(element, height);
+    return height;
+}
+
+// // Set セットとは、重複する値がないことを保証したコレクションのこと forEachメソッド使用可---------------------
+// iteratorオブジェクト作成メソッド keys/values/entries が使用可
+// const set = new Set();
+// set.add("a");
+// set.add("b");
+// console.log(set.size); // => 2
+// set.delete("a");
+// console.log(set.size); // => 1
+// set.clear();
+// console.log(set.size); // => 0
+
+// iteratorオブジェクト作成メソッド keys/values/entries が使用可−−−−−−−−−
+
+// const set = new Set(["a", "b"]);
+// const results = [];
+// set.forEach((value) => {
+//     results.push(value);
+// });
+// console.log(results); // => ["a","b"]
+
+// const keysResults = [];
+// for (const value of set.keys()) {
+//     keysResults.push(value);
+// }
+// console.log(keysResults); // => ["a","b"]
+// // entriesで列挙
+// const entryResults = [];
+// for (const entry of set.entries()) {
+//     // entryは[値, 値]という配列
+//     entryResults.push(entry);
+// }
+// console.log(entryResults); // => [["a","a"], ["b", "b"]]
+
+// Setオブジェクト自身もiterableなオブジェクトであるため、for...of文で反復処理可能------------------
+const set = new Set(["a", "b"]);
+const results = [];
+for (const value of set) {
+    results.push(value);
+}
+console.log(results); // => ["a","b"]
