@@ -2028,41 +2028,41 @@
 // console.log(shoppingCart.toString()); // => "みかん:2,リンゴ:1"
 
 
-// WeakMap-------------------------------
-// イベントリスナーを管理するマップ
-const listenersMap = new WeakMap();
+// // WeakMap-------------------------------
+// // イベントリスナーを管理するマップ
+// const listenersMap = new WeakMap();
 
-class EventEmitter {
-    addListener(listener) {
-        // this にひもづいたリスナーの配列を取得する
-        const listeners = listenersMap.get(this) ?? [];
-        const newListeners = listeners.concat(listener);
-        // this をキーに新しい配列をセットする
-        listenersMap.set(this, newListeners);
-    }
-}
+// class EventEmitter {
+//     addListener(listener) {
+//         // this にひもづいたリスナーの配列を取得する
+//         const listeners = listenersMap.get(this) ?? [];
+//         const newListeners = listeners.concat(listener);
+//         // this をキーに新しい配列をセットする
+//         listenersMap.set(this, newListeners);
+//     }
+// }
 
-// 上記クラスの実行例
+// // 上記クラスの実行例
 
-let eventEmitter = new EventEmitter();
-// イベントリスナーを追加する
-eventEmitter.addListener(() => {
-    console.log("イベントが発火しました");
-});
-// eventEmitterへの参照がなくなったことで自動的にイベントリスナーが解放される
-eventEmitter = null;
+// let eventEmitter = new EventEmitter();
+// // イベントリスナーを追加する
+// eventEmitter.addListener(() => {
+//     console.log("イベントが発火しました");
+// });
+// // eventEmitterへの参照がなくなったことで自動的にイベントリスナーが解放される
+// eventEmitter = null;
 
-const cache = new WeakMap();
+// const cache = new WeakMap();
 
-function getHeight(element) {
-    if (cache.has(element)) {
-        return cache.get(element);
-    }
-    const height = element.getBoundingClientRect().height;
-    // elementオブジェクトに対して高さをひもづけて保存している
-    cache.set(element, height);
-    return height;
-}
+// function getHeight(element) {
+//     if (cache.has(element)) {
+//         return cache.get(element);
+//     }
+//     const height = element.getBoundingClientRect().height;
+//     // elementオブジェクトに対して高さをひもづけて保存している
+//     cache.set(element, height);
+//     return height;
+// }
 
 // // Set セットとは、重複する値がないことを保証したコレクションのこと forEachメソッド使用可---------------------
 // iteratorオブジェクト作成メソッド keys/values/entries が使用可
@@ -2097,10 +2097,102 @@ function getHeight(element) {
 // }
 // console.log(entryResults); // => [["a","a"], ["b", "b"]]
 
-// Setオブジェクト自身もiterableなオブジェクトであるため、for...of文で反復処理可能------------------
-const set = new Set(["a", "b"]);
-const results = [];
-for (const value of set) {
-    results.push(value);
+// // Setオブジェクト自身もiterableなオブジェクトであるため、for...of文で反復処理可能------------------
+// const set = new Set(["a", "b"]);
+// const results = [];
+// for (const value of set) {
+//     results.push(value);
+// }
+// console.log(results); // => ["a","b"]
+
+// #24 JSON JavaScript Object Notation-------------------------------
+// JSONはダブルクォートのみを許容するため、シングルクォートでJSON文字列を記述
+// {
+//     "object": {
+//         "number": 1,
+//         "string": "js-primer",
+//         "boolean": true,
+//         "null": null,
+//         "array": [1, 2, 3]
+//     }
+// }
+// {
+// const json = '{ "id": 1, "name": "js-primer" }';
+// const obj = JSON.parse(json);
+// console.log(obj.id); // => 1
+// console.log(obj.name); // => "js-primer"
+
+// const userInput = "not json value";
+// try {
+//     const json = JSON.parse(userInput);
+// } catch (error) {
+//     console.log("パースできませんでした");
+// }
+// }
+
+// const obj = { id: 1, name: "js-primer", bio: null };
+// console.log(JSON.stringify(obj)); // => '{"id":1,"name":"js-primer","bio":null}'
+
+// // #25 Date -----------------------------
+// // 現在の時刻を表すインスタンスを作成する
+// const now = new Date();
+// // 時刻値だけが欲しい場合にはDate.nowメソッドを使う
+// console.log(Date.now());
+
+// // 時刻値を取得する
+// console.log(now.getTime());
+// // 時刻をISO 8601形式の文字列で表示する
+// console.log(now.toISOString());
+
+// // YYYY/MM/DD形式の文字列に変換する関数
+// function formatDate(date) {
+//     const yyyy = String(date.getFullYear());
+//     // String#padStartメソッド（ES2017）で2桁になるように0埋めする
+//     const mm = String(date.getMonth() + 1).padStart(2, "0");
+//     const dd = String(date.getDate()).padStart(2, "0");
+//     return `${yyyy}/${mm}/${dd}`;
+// }
+
+// const date = new Date("2006-01-02T15:04:05.999");
+// console.log(formatDate(date)); // => "2006/01/02"
+
+// // getTimezoneOffsetはインスタンスメソッドなので、インスタンスが必要
+// // const now = new Date();
+// // 時間単位にしたタイムゾーンオフセット
+// const timezoneOffsetInHours = now.getTimezoneOffset() / 60;
+// // UTCの現在の時間を計算できる
+// console.log(`Hours in UTC: ${now.getHours() + timezoneOffsetInHours}`);
+
+// #26 Math ------------------------------
+console.log(Math.PI);
+const rad90 = Math.PI * 90 / 180;
+console.log(rad90);
+const sin90 = Math.sin(rad90);
+console.log(sin90); // => 1 
+
+for (let i = 0; i < 5; i++) {
+    // 毎回ランダムな浮動小数点数を返す
+    console.log(Math.random());
 }
-console.log(results); // => ["a","b"]
+
+// minからmaxまでの乱数を返す関数
+function getRandom(min, max) {
+    return Math.random() * (max - min) + min;
+}
+// 1以上5未満の浮動小数点数を返す
+console.log(getRandom(1, 5));
+
+// 数値を整数にする
+// 底関数
+console.log(Math.floor(1.3)); // => 1
+console.log(Math.floor(-1.3)); // => -2
+// 天井関数
+console.log(Math.ceil(1.3)); // => 2
+console.log(Math.ceil(-1.3)); // => -1
+// 四捨五入
+console.log(Math.round(1.3)); // => 1
+console.log(Math.round(1.6)); // => 2
+console.log(Math.round(-1.3)); // => -1
+// 単純に小数部分を切り落とす
+console.log(Math.trunc(1.3)); // => 1 Math.floor と同じ処理になる
+console.log(Math.trunc(-1.3)); // => -1 Math.ceil と同じ処理になる
