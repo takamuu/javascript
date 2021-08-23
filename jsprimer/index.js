@@ -54,7 +54,6 @@
 // console.log(addPrefix("文字列"));
 // console.log(addPrefix("文字列", "カスタム"));
 
-
 // function addPrefix2(text, prefix) {
 //   let pre2 = "デフォルト:";
 //   if (typeof prefix === "string") {
@@ -232,7 +231,6 @@
 // console.log(doubleArray2); // => [2, 4, 6]
 
 // // コールバック関数---------------------
-// // 引数として渡される関数のことをコールバック関数と呼びます。 
 // // 一方、コールバック関数を引数として使う関数やメソッドのことを高階関数と呼びます。
 // const array6 = [1, 2, 3];
 // const output = (value) => {
@@ -301,7 +299,6 @@
 // }
 // const array7 = [1, 5, 10, 15, 20];
 // console.log(isEvenIncluded(array7)); // => true
-
 
 // // 配列のsomeメソッド
 // function isEven(num) {
@@ -402,7 +399,7 @@
 // object.key = "value";
 // // => TypeError: "key" is read-only
 // // console.log(object.key);
-// // 
+// //
 // 'use strict';
 // var v = "こんにちは！ Strict モードのスクリプト！";
 // console.log(v);
@@ -418,7 +415,7 @@
 // function notStrict() { return "Strict モードではありません"; }
 // console.log(notStrict());
 
-// 
+//
 
 // const widget = {
 //     window: {
@@ -526,7 +523,7 @@
 //     },
 // };
 // const cloneObj = shallowClone(obj);
-// // `nest`プロパティのオブジェクトは同じオブジェクトのままになる 
+// // `nest`プロパティのオブジェクトは同じオブジェクトのままになる
 // console.log(obj.level === cloneObj.level);
 // console.log(obj.nest);
 // console.log(cloneObj.nest === obj.nest); // => true
@@ -558,8 +555,8 @@
 // const obj = {
 //     "key": "value"
 // };
-// console.log(obj.toString === Object.prototype.toString); 
-// console.log(Object.prototype.toString()); 
+// console.log(obj.toString === Object.prototype.toString);
+// console.log(Object.prototype.toString());
 // console.log(obj.toString());
 
 // オブジェクトのインスタンスにtoStringメソッドを定義
@@ -570,8 +567,7 @@
 // };
 // console.log(customObject.toString()); // => "custom value"
 
-//配列-------------------
-
+// 配列-------------------
 // // 破壊的メソッド
 // // `array`の`index`番目の要素を削除した配列を返す関数
 // // 引数の`array`は破壊的に変更される
@@ -585,7 +581,6 @@
 // console.log(newArray); // => ["A", "C"]
 // // `array`自体にも影響を与える
 // console.log(array); // => ["A", "C"]
-
 
 // // .sliceメソッドを使用することでコピーした配列を使用できる。
 // // 非破壊的であれば引数の配列への副作用がないので、注意喚起コメントは不要になる。
@@ -748,7 +743,8 @@
 // for (const match of matchesIterator) {
 //     // マッチした要素ごとの情報を含んでいる
 //     // 0番目はマッチした文字列全体、1番目がキャプチャの1番目である数字
-//     console.log(`match: "${match[0]}", capture1: ${match[1]}, index: ${match.index}, input: "${match.input}"`);
+// eslint-disable-next-line max-len
+//      console.log(`match: "${match[0]}", capture1: ${match[1]}, index: ${match.index}, input: "${match.input}"`);
 // }
 // // 次の順番でコンソールに出力される
 // // match: "ES2015", capture1: 2015, index: 0, input: "ES2015、ES2016、ES2017"
@@ -786,7 +782,7 @@
 //         // `all`には、マッチした文字列全体が入っているが今回は利用しない
 //         // `all`が次の返す値で置換されるイメージ
 //         return `${year}年${month}月${day}日`;
-       
+
 //     });
 // }
 // // マッチしない文字列の場合は、そのままの文字列が返る
@@ -813,7 +809,7 @@
 
 // // テンプレートを順番どおりに結合した文字列を返すタグ関数
 // function stringRaw(strings, ...values) {
-    
+
 //     // // stringsは文字列のパーツが${}で区切られた配列となる
 //     // console.log(strings); // => ["template "," literal ",""]
 //     // // valuesには${}の評価値が順番に入る
@@ -834,7 +830,7 @@
 // // 関数`テンプレートリテラル` という形で呼び出す
 // console.log(stringRaw`template ${0} literal ${1}`); // => "template 0 literal 1"
 
-// // ??? タグ付きテンプレート関数は理解できなかったので、あとで再度学習！！！？？？ 
+// // ??? タグ付きテンプレート関数は理解できなかったので、あとで再度学習！！！？？？ ???????????????????????????????
 
 // // 文字列とUnicode
 // console.log("あ".codePointAt(0));
@@ -995,7 +991,6 @@
 // // `say`関数をそのまま呼び出すと`this`は`undefined`となるため例外が発生
 // say("こんにちは"); // => TypeError: Cannot read property 'fullName' of undefined
 
-
 // // applyメソッド（第一引数にthisを指定、第二引数に関数の引数を配列として渡す）
 // "use strict";
 // function say(message) {
@@ -1148,7 +1143,6 @@
 // arrayLike.length = 5;
 // console.log(arrayLike.items.join(", ")); // => "1, 2, , , "
 
-
 // class ArrayWrapper {
 //     constructor(array = []) {
 //         this.array = array;
@@ -1217,7 +1211,6 @@
 // conflict.method(); // "プロトタイプメソッド"
 // console.log(conflict);
 // console.log(typeof ConflictClass.prototype);
-
 
 // function fn() {
 // }
@@ -1400,7 +1393,6 @@
 // blockTime(1000); // 1秒間処理をブロックする
 // console.log("ブロックする処理が完了しました");
 
-
 // try {
 //     setTimeout(() => {
 //         throw new Error("非同期的なエラー");
@@ -1468,8 +1460,6 @@
 // }, function onRejected(error) {
 //     console.log(error); // Error: "NOT FOUND"
 // });
-
-
 
 // // /success/data にリソースが存在するので、`response`にはデータが入る
 // dummyFetch("/success/data", (error, response) => {
@@ -1541,7 +1531,6 @@
 //     // この行は呼び出されない
 // });
 
-
 // // Promise.resolve
 
 // // const fulfilledPromise = Promise.resolve(); と同じ意味
@@ -1564,10 +1553,8 @@
 // });
 // console.log("2. 同期的な処理が実行されました");
 
-
-
 // Promiseチェーン
-// 
+//
 // // console.log(Math.random());
 // function asyncTask() {
 //     return Math.random() > 0.5
@@ -1773,7 +1760,6 @@
 // });
 
 // Async Function definition ------------
-
 
 // // Async Function returns a Promise -----------
 // // 1. resolveFnは値を返している
@@ -1995,7 +1981,7 @@
 //   addItem(item) {
 //     // `item`がない場合は`undefined`を返すため、Nullish coalescing演算子(`??`)を使いデフォルト値として`0`を設定する
 //     const count = this.items.get(item) ?? 0;
-//     this.items.set(item, count + 1); 
+//     this.items.set(item, count + 1);
 //   }
 //     // カート内の合計金額を返す
 //   getTotalPrice() {
@@ -2026,7 +2012,6 @@
 // console.log(shoppingCart.getTotalPrice()); // => 400
 // // カートの中身を表示する
 // console.log(shoppingCart.toString()); // => "みかん:2,リンゴ:1"
-
 
 // // WeakMap-------------------------------
 // // イベントリスナーを管理するマップ
@@ -2163,36 +2148,138 @@
 // // UTCの現在の時間を計算できる
 // console.log(`Hours in UTC: ${now.getHours() + timezoneOffsetInHours}`);
 
-// #26 Math ------------------------------
-console.log(Math.PI);
-const rad90 = Math.PI * 90 / 180;
-console.log(rad90);
-const sin90 = Math.sin(rad90);
-console.log(sin90); // => 1 
+// // #26 Math ------------------------------
+// console.log(Math.PI);
+// const rad90 = Math.PI * 90 / 180;
+// console.log(rad90);
+// const sin90 = Math.sin(rad90);
+// console.log(sin90); // => 1
 
-for (let i = 0; i < 5; i++) {
-    // 毎回ランダムな浮動小数点数を返す
-    console.log(Math.random());
+// for (let i = 0; i < 5; i++) {
+//     // 毎回ランダムな浮動小数点数を返す
+//     console.log(Math.random());
+// }
+
+// // minからmaxまでの乱数を返す関数
+// function getRandom(min, max) {
+//     return Math.random() * (max - min) + min;
+// }
+// // 1以上5未満の浮動小数点数を返す
+// console.log(getRandom(1, 5));
+
+// // 数値を整数にする
+// // 底関数
+// console.log(Math.floor(1.3)); // => 1
+// console.log(Math.floor(-1.3)); // => -2
+// // 天井関数
+// console.log(Math.ceil(1.3)); // => 2
+// console.log(Math.ceil(-1.3)); // => -1
+// // 四捨五入
+// console.log(Math.round(1.3)); // => 1
+// console.log(Math.round(1.6)); // => 2
+// console.log(Math.round(-1.3)); // => -1
+// // 単純に小数部分を切り落とす
+// console.log(Math.trunc(1.3)); // => 1 Math.floor と同じ処理になる
+// console.log(Math.trunc(-1.3)); // => -1 Math.ceil と同じ処理になる
+
+// // [ES2015]ECMAScriptモジュール
+// // 構文
+// // 名前付きエクスポート／インポート
+// const foo = "foo";
+// // 宣言済みのオブジェクトを名前つきエクスポートする
+// export { foo };
+// // 宣言と同時に名前つきエクスポートする
+// export function bar() { };
+// // 名前つきエクスポートされたfooとbarをインポートする
+// import { foo, bar } from "./my-module.js";
+// console.log(foo); // => "foo"
+// console.log(bar); // => "bar"
+
+// const internalFoo = "foo";
+// // internalFoo変数をfooとして名前つきエクスポートする
+// export { internalFoo as foo };
+
+// 第二部 応用編 #1 アプリケーション開発の準備 ----------------------
+// eslint-disable-next-line no-console
+console.log('index.js: loaded');
+
+// #2 Ajax通信 ---------------------------------------
+// #3 Node.jsでCLIアプリ ------------------------------
+// #4 Todoアプリ ------------------------------------
+// airBnB のESlint設定
+
+// paiza 入力メソッド-----------------------------
+// var lines = [];
+// var reader = require('readline').createInterface({
+//   input: process.stdin,
+//   output: process.stdout
+// });
+// reader.on('line', (line) => {
+//   lines.push(line);
+// });
+// reader.on('close', () => {
+//   console.log(lines[0]);
+// });
+// function htmlToElement(html) {
+//     const template = document.createElement("template");
+//     template.innerHTML = html;
+//     return template.content.firstElementChild;
+// }
+
+// function element(strings, ...values) {
+//   console.log(strings);
+//   console.log(values);
+//     const htmlString = strings.reduce((result, str, i) => {
+//       console.log([result]);
+//         const value = values[i - 1];
+//         console.log(value);
+//         if (typeof value === "string") {
+//           console.log([result]);
+//             return result + value + str;
+//         } else {
+//           console.log([result, value, str]);
+//             return result + String(value) + str;
+//         }
+//     });
+//     console.log(htmlString);
+// }
+
+
+// // HTML文字列からHTML要素を作成
+// const newElement = element`<ul>
+//     <li>新しい要素</li>
+// </ul>`;
+// // 作成した要素を`document.body`の子要素として追加（appendChild）する
+// document.body.appendChild(newElement);
+
+
+// function element(strings, ...values) {
+//   // resultの初期値はstrings[0]の値となる
+//     return strings.reduce((result, str, i) => {
+//         console.log([result, values[i - 1], str]);
+//         // それぞれループで次のような出力となる
+//         // 1度目: ["template ", 0, " literal "]
+//         // 2度目: ["template 0 literal ", 1, ""]
+//         return result + values[i - 1] + str;
+//     });
+// }
+
+// const newElement = element`template ${0} literal ${1}`;
+
+// 何が表示されるでしょうか？
+const a = [];
+for (let i = 0; i < 9; i++) {
+  a[i] = () => console.log("i: " + i);
 }
 
-// minからmaxまでの乱数を返す関数
-function getRandom(min, max) {
-    return Math.random() * (max - min) + min;
+const b = [];
+let j = 0;
+while (j < 9) {
+  b[j] = () => console.log("j: " + j);
+  j++;
 }
-// 1以上5未満の浮動小数点数を返す
-console.log(getRandom(1, 5));
 
-// 数値を整数にする
-// 底関数
-console.log(Math.floor(1.3)); // => 1
-console.log(Math.floor(-1.3)); // => -2
-// 天井関数
-console.log(Math.ceil(1.3)); // => 2
-console.log(Math.ceil(-1.3)); // => -1
-// 四捨五入
-console.log(Math.round(1.3)); // => 1
-console.log(Math.round(1.6)); // => 2
-console.log(Math.round(-1.3)); // => -1
-// 単純に小数部分を切り落とす
-console.log(Math.trunc(1.3)); // => 1 Math.floor と同じ処理になる
-console.log(Math.trunc(-1.3)); // => -1 Math.ceil と同じ処理になる
+a[2]();
+a[5]();
+b[2]();
+b[5]();
